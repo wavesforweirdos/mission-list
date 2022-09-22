@@ -1,0 +1,42 @@
+<div class="min-h-full p-20 flex justify-center">
+  <div class="max-w-lg w-full space-y-10 flex-col justify-center">
+    <div class="space-y-5">
+      <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
+      <h1 class="text-center text-4xl font-bold text-white">A weirdo is signing up...</h1>
+    </div>
+    <form id="singup-form" class="mx-auto max-w-sm space-y-1" action="#" method="POST">
+      <div class="space-y-5">
+        <div class="space-y-2">
+          <label for="username" class="ml-5 font-medium text-white">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" required 
+          class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="<?php if (!(empty($_POST['singup-form']))) {echo $username;} else {echo "Get started by entering a username";} ?>">
+        </div>
+        <div class="space-y-2">
+          <label for="name" class="ml-5 font-medium text-white">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder=" <?php if (!(empty($_POST['singup-form']))) {$name;} else {echo "your name here...";} ?>">
+        </div>
+        <div class=" space-y-2">
+          <label for="lastname" class="ml-5 font-medium text-white">Your lastname</label>
+          <input id="lastname" name="lastname" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="<?php if (!(empty($_POST['singup-form']))) {$lastname;} else {echo "now, your lasname...";}?>">
+        </div>
+        <div class=" space-y-2">
+          <label for="email" class="ml-5 font-medium text-white">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="<?php if (!(empty($_POST['singup-form']))) {$mail;} else {echo "Enter your email address";} ?>">
+        </div>
+        <div class=" space-y-2">
+          <label for="password" class="ml-5 font-medium text-white">Enter the password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="Enter the password">
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <div class="text-sm">
+          <a href="./" class="font-medium text-lime-600 hover:text-lime-200"> Log in</a>
+        </div>
+      </div>
+      <div class="flex pt-10 place-content-center">
+      <input type="submit" name="signin" value="I'm ready!" class="group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+      </div>
+    </form>
+  </div>
+</div>

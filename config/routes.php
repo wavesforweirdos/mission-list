@@ -1,14 +1,23 @@
 <?php 
 
-/**
- * Used to define the routes in the system.
- * 
- * A route should be defined with a key matching the URL and an
- * controller#action-to-call method. E.g.:
- * 
+//Para definir las rutas del sistema tenemos que hacer coincidir la URL
+//y controlador#action-to-call method. E.g.:
+
+/* 
  * '/' => 'index#index',
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
-	'/test' => 'test#index'
+	'/test' => 'test#index',
+	'/check' => 'test#check',
+	
+	'/' => 'user#index',
+	'/index' => 'user#index',
+	'/user' => 'user#index',
+	'/login' => 'user#index',
+	'/signin' => 'user#signin',
+	
+	'/mission' => 'mission#index',
 );
+
+?>
