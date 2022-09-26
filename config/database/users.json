@@ -1,0 +1,37 @@
+[
+    {
+        "username": "wavesforweirdos",
+        "name": "Marta",
+        "lastname": "Cruz Quimas\u00f3",
+        "mail": "wavesforweirdos@gmail.com",
+        "password": "$2y$10$MTiv4Cje9oBHxJYxUnysCu.IoDFh5gzWWngtnY.vT55VBu09z5rSa"
+    },
+    {
+        "username": "treblie",
+        "name": "Albert",
+        "lastname": "Coderch",
+        "mail": "coderch@gmail.com",
+        "password": "$2y$10$xl3URRYaQeVY08aY2xTLnef69COlg7p4W3KgHEFMBgCWwipv.fBCa"
+    },
+    {
+        "username": "waves",
+        "name": "Marta",
+        "lastname": "Cruz",
+        "mail": "inmerset@gmail.com",
+        "password": "$2y$10$0Lo0O8YCVuxBnDfIMz.dxu6gzjSNpTFrwRAk3dPsy9LAvoWiDbTA6"
+    },
+    {
+        "username": "tre",
+        "name": "tre",
+        "lastname": "tre",
+        "mail": "tre@ml.com",
+        "password": "$2y$10$TnVnl.hNKi6WC7AkYVXZCOOA0R55fHEYvIX36SY6YZ\/eSxOhX0X\/6"
+    },
+    {
+        "username": "titi",
+        "name": "titi",
+        "lastname": "titi",
+        "mail": "titi@mn.com",
+        "password": "$2y$10$ms3hWZu5gbSauj4OW2sEmuE2.OoZUS0kegK3PhLJ\/\/EXAPikoBqia"
+    }
+]

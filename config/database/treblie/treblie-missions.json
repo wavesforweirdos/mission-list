@@ -1,0 +1,28 @@
+[
+    {"title": "First win of the day",
+        "character": "Warwick",
+        "tag": "3",
+        "end_date": "2022-09-08 00:00:00",
+        "status": "completed",
+        "starred": "0",
+        "date_record": "2022-09-07 00:00:00"
+    },
+    {
+        "title": "Enter the Draconic Lands",
+        "character": "Brand",
+        "tag": "2",
+        "end_date": "2022-08-12 00:00:00",
+        "status": "pending",
+        "starred": "1",
+        "date_record": "2022-09-05 00:00:00"
+    },
+    {
+        "title": "Kill 200 minions",
+        "character": "Varus",
+        "tag": "0",
+        "end_date": "2022-08-12 00:00:00",
+        "status": "in progress",
+        "starred": "1",
+        "date_record": "2022-09-05 00:00:00"
+    }
+]
