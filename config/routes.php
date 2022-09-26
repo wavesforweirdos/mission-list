@@ -18,6 +18,7 @@ $routes = array(
 	'/signin' => 'user#signin',
 	
 	'/mission' => 'mission#index',
+	'/newmission' => 'mission#newmission',
 );
 
 ?>
