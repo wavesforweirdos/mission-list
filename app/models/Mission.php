@@ -2,7 +2,6 @@
 class Mission
 {
     private $username;
-    /*
     private $title;
     private $character;
     private $tag;
@@ -10,20 +9,19 @@ class Mission
     private $status;
     private $starred;
     private $date_record;
-    */
+
     private $missionArray;
     private $deletedMissionArray;
-    private $USER_DB_PATCH;
 
 
     public function __construct($user)
     {
         $this->username = $user;
-        $this->USER_DB_PATCH = CONFIG_PATH . '/database/' . $this->username . '/';
-        if (!file_exists($this->USER_DB_PATCH)) {
-            $missionFile = json_decode(file_put_contents($this->USER_DB_PATCH . $this->username . '-missions.json', '[]'));
+
+        if (!file_exists(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json')) {
+            $missionFile = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json', '[]'));
         } else {
-            $missionFile = json_decode(file_get_contents($this->USER_DB_PATCH . $this->username . '-missions.json'), true);
+            $missionFile = json_decode(file_get_contents(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json'), true);
         }
         $this->missionArray = $missionFile;
     }
@@ -40,7 +38,7 @@ class Mission
     {
         if (!$this->missionArray) {
             //si no existe un array de misiones, lo crea y añade el usuario
-            $this->missionArray = file_put_contents($this->USER_DB_PATCH . $this->username . '-missions.json', '
+            $this->missionArray = file_put_contents(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json', '
             { "title":"' . $title . '",
             "character": "' . $character . '",
             "tag": "' . $tag . '",
@@ -64,7 +62,7 @@ class Mission
 
                 $this->missionArray[] = $newMission;
                 $json = json_encode($this->missionArray, JSON_PRETTY_PRINT);
-                file_put_contents($this->USER_DB_PATCH . $this->username . '-missions.json', $json);
+                file_put_contents(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json', $json, FILE_APPEND | LOCK_EX);
             }
         }
     }
@@ -72,19 +70,22 @@ class Mission
     public function deleteMission($title)
     {
         $missionFile = $this->missionArray;
-
         if (is_array($missionFile)) {
             foreach ($missionFile as $key => $val) {
                 //echo $val['title'];
                 if ($val['title'] === $title) {
+
+                    //añadimos las tareas eliminadas en un archivo aparte
+                    $this->deletedMissionArray[] = $missionFile[$key];
+                    $deletedJson = json_encode($this->deletedMissionArray, JSON_PRETTY_PRINT);
+                    file_put_contents(CONFIG_PATH . 'database/' . $this->username . '/' . $this->username . '-deleted-missions.json', $deletedJson, FILE_APPEND | LOCK_EX);
+
+                    //eliminamos la variable del array inicial
                     unset($missionFile[$key]);
-                    // $deletedMission = $missionFile[$key];
-                    // $this->deleteMissionArray = json_decode(file_put_contents($this->USER_DB_PATCH . '-deleted-missions.json', $deletedMission));
                 }
             }
-
             $missionFile = json_encode($missionFile, JSON_PRETTY_PRINT);
-            file_put_contents($this->USER_DB_PATCH . $this->username . '-missions.json', true);
+            file_put_contents(CONFIG_PATH . '/database/' . $this->username . '/' . $this->username . '-missions.json', $missionFile);
         }
     }
 

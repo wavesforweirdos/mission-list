@@ -10,16 +10,19 @@ class MissionController extends Controller
 		$_SESSION['missionArray'] = $mission->getAllMissions();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (isset($_POST['addmission'])) {
+
+			if (isset($_POST['addmission'])) { //añadir mission
 				//redirigir a formulario de newMission
 				header('Location: newmission');
-			} elseif (isset($_POST['logout'])) {
+
+			} elseif (isset($_POST['logout'])) { //cerrar sesión
 				//añadir boton de logout
-			} elseif (isset($_POST['delete'])) {
+
+			} elseif (isset($_POST['delete'])) {//eliminar misión
 				//recoger el nombre de la mision 
 				$title = $_POST['missionName'];
 				$mission->deleteMission($title);
-				
+				header('Location: mission');
 			}
 		}
 	}
