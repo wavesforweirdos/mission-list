@@ -1,5 +1,4 @@
 <?php
-
 $missionArray = $_SESSION['missionArray'];
 if (!is_array($missionArray)) {
   $missionArray = [];
@@ -8,11 +7,10 @@ if (!is_array($missionArray)) {
 // echo '<pre>';
 // print_r($missionArray);
 // echo '</pre>';
+
 ?>
 
-<!-- Listado de misiones -->
-
-
+<!-- Estrucutra listado de misiones -->
 <div class="mx-auto space-y-1 min-h-full p-20 flex justify-center text-white">
   <div class="flex flex-col flex-wrap max-w-lg w-full justify-center">
     <div class="space-y-5">
@@ -20,44 +18,64 @@ if (!is_array($missionArray)) {
       <h1 class="text-center text-4xl font-bold">Mission List</h1>
     </div>
 
-    <!-- (no funciona) Filtrado de misiones por nombre -->
-    <div class="mt-10 input-group flex w-full drop-shadow-md">
-      <input type="search" class="relative block w-full px-5 py-2 rounded-l-2xl  focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white font-normal text-xs tracking-wider" placeholder="Search by mission name...">
-      <button id="searchmission" name="searchmission" class="btn px-6 py-2.5 leading-tight rounded-r-2xl focus:outline-none focus:ring focus:ring-lime-500 bg-lime-700 hover:bg-lime-800 transition duration-150 ease-in-out flex items-center" type="button">
-        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z">
-          </path>
-        </svg>
-      </button>
-    </div>
+    <!-- Filtrado de misiones por nombre -->
+    <form method="POST">
+      <div class="mt-10 input-group flex w-full drop-shadow-md">
+        <input id="searchName" name="searchName" type="search" class="relative block w-full px-5 py-2 rounded-l-2xl  focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white font-normal text-xs tracking-wider" placeholder="Search by mission name...">
+        <button id="searchMission" name="searchMission" type="submit" class="btn px-6 py-2.5 leading-tight rounded-r-2xl focus:outline-none focus:ring focus:ring-lime-500 bg-lime-700 hover:bg-lime-800 transition duration-150 ease-in-out flex items-center">
+          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </form>
 
-    <!-- (no funciona) Filtrado de misiones segun status/starred -->
-    <form id="filter" method="POST">
+    <!-- Filtrado de misiones segun status/starred -->
+    <form method="POST">
+      <?php
+      $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
+      $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
+
+      if (isset($_POST['starredFilter'])) {
+        $button2 = $featuredbtn;
+        $button1 = $button3 = $button4 = $defaultbtn;
+      } elseif (isset($_POST['completedFilter'])) {
+        $button3 = $featuredbtn;
+        $button1 = $button2 = $button4 = $defaultbtn;
+      } elseif (isset($_POST['trashedFilter'])) {
+        $button4 = $featuredbtn;
+        $button1 = $button2 = $button3 = $defaultbtn;
+      } else {
+        $button1 = $featuredbtn;
+        $button2 = $button3 = $button4 = $defaultbtn;
+      }
+      ?>
       <div class="mt-5 w-full flex justify-items-stretch py-5 gap-2">
         <div class="flex-1">
-          <button id="allmission" name="allmission" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm font-medium text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+          <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button1; ?>">
             All
           </button>
         </div>
         <div class="flex-1">
-          <button id="starred" name="starred" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button2; ?>">
             Starred
           </button>
         </div>
         <div class="flex-1">
-          <button id="trashed" name="trashed" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
-            Trashed
+          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button3; ?>">
+            Completed
           </button>
         </div>
         <div class="flex-1">
-          <button id="completed" name="completed" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
-            Completed
+          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button4; ?>">
+            Trashed
           </button>
         </div>
       </div>
     </form>
 
-    <!-- Lista (en loop) de misiones -->
+    <!-- Lista de misiones -->
     <div class="space-y-3 w-full">
 
       <?php
@@ -69,10 +87,6 @@ if (!is_array($missionArray)) {
           $tag = $mission['tag'];
 
           switch ($tag) {
-            case '0':
-              $color = 'red';
-              $text = 'Attack';
-              break;
             case '1':
               $color = 'lime';
               $text = 'Defense';
@@ -85,28 +99,48 @@ if (!is_array($missionArray)) {
               $color = 'yellow';
               $text = 'Daily';
               break;
+            case '4':
+              $color = 'red';
+              $text = 'Attack';
+              break;
           }
 
           $end_date = $mission['end_date'];
-          $status = ucfirst($mission['status']);
           $starred = $mission['starred'];
 
           switch ($starred) {
             case '0':
               $star = 'regular';
+              $colorStar = '';
               break;
             case '1':
               $star = 'solid';
+              $colorStar = 'text-white';
               break;
           }
 
-          $date_record = $mission['date_record'];
-
+          $status = $mission['status'];
+          switch ($status) {
+            case '0':
+              $check = '';
+              $bgcolor = 'bg-lime-900/70';
+              break;
+            case '1':
+              $check = '';
+              $bgcolor = 'bg-lime-900/70';
+            case '2':
+              $check = 'text-white';
+              $bgcolor = 'bg-lime-400/50 opacity-50';
+              break;
+            case '3':
+              $check = '';
+              $bgcolor = 'bg-rose-500 opacity-30';
+              break;
+          }
 
       ?>
           <form method="POST">
-            <div class="flex gap-7 px-5 py-3 items-center rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-00 bg-lime-900/90">
-              <!-- Input-hidden para recoger el value de mission -->
+            <div class="flex gap-7 px-5 py-3 items-center rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-00 <?php echo $bgcolor ?>">
               <!-- Character -->
               <div class="flex-3 text-2xl font-semibold transition duration-100 ease-in-out" data-bs-toggle="tooltip" data-bs-html="true" title="<?php echo $character ?>"><?php echo $iCharacter ?></a></div>
               <!-- Tag -->
@@ -114,12 +148,13 @@ if (!is_array($missionArray)) {
               <!-- Character -->
               <div class="flex-1 font-medium text-center "><?php echo $title ?></div>
               <!-- (no funcionan) Operaciones -->
-              <div class="flex-none font-medium flex gap-2.5">
+              <div class="flex-none font-medium flex gap-2.5 text-lime-600">
+                <!-- Input-hidden para recoger el value de mission -->
                 <input type="hidden" name="missionName" value="<?php echo $title ?>">
-                <button id="starred" name="starred" type="submit"><i class="fa-<?php echo $star ?> fa-star"></i></button>
-                <button id="edit" name="edit" type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
-                <button id="complete" name="complete" type="submit"><i class="fa-solid fa-check"></i></button>
-                <button id="delete" name="delete" type="submit"><i class="fa-solid fa-xmark"></i></button>
+                <button id="starred" name="starred" type="submit"><i class="fa-<?php echo $star . ' ' . $colorStar ?> fa-star hover:text-white"></i></button>
+                <button id="edit" name="edit" type="submit"><i class="fa-regular fa-pen-to-square hover:text-white"></i></button>
+                <button id="complete" name="complete" type="submit"><i class="fa-solid fa-check <?php echo $check ?> hover:text-white"></i></button>
+                <button id="delete" name="delete" type="submit"><i class="fa-solid fa-xmark hover:text-white"></i></button>
               </div>
             </div>
           </form>
@@ -133,19 +168,26 @@ if (!is_array($missionArray)) {
             <i class="fas fa-plus"></i></button>
         </div>
       </form>
+      </form>
+    </div>
+    <!-- Enlace para cerrar sesión -->
+    <div class="flex justify-center items-center gap-5 mt-32 text-white/70 font-semibold text-sm hover:text-lime-200">
+      <a href="logout">Log out</a>
+      <div class=" text-center text-bold text-3xl">·</div>
+      <button id="deletemissions" name="deletemissions" type="submit">Delete all missions</button>
     </div>
   </div>
-  </form>
 
+</div>
 
-  <!-- Script de tooltip para mostrar character y tag completo -->
-  <!-- Required popper.js -->
-  <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-      return new Tooltip(tooltipTriggerEl);
-    });
-  </script>
+<!-- Script de tooltip para mostrar character y tag completo -->
+<!-- Required popper.js -->
+<script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    return new Tooltip(tooltipTriggerEl);
+  });
+</script>

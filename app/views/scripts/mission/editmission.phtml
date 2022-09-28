@@ -1,42 +1,112 @@
+<?php
+
+$title = $_SESSION['title'];
+$mission = $_SESSION['mission'];
+
+?>
+
 <div class="min-h-full p-20 flex justify-center text-white">
   <div class="max-w-lg w-full space-y-10 flex-col justify-center">
     <div class="space-y-5">
       <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
       <h1 class="text-center text-4xl font-bold">Edit Mission</h1>
     </div>
-    <form class="mx-auto max-w-lg space-y-1" action="#" method="POST">
-      <div class="space-y-5">
-        <div class="space-y-2  text-white">
-          <label for="newMission" class="ml-5 font-medium"> Mission Title</label>
-          <input id="newMission" name="newMission" type="text" required="" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" placeholder="Value of mission selected">
+
+    <?php
+    if (isset($_SESSION['missionArray'])) {
+      $title = ucfirst($mission['title']);
+      $character = ucfirst($mission['character']);
+      $tag = $mission['tag'];
+
+      switch ($tag) {
+        case '1':
+          $textTag = '🟢 Defense';
+          break;
+        case '2':
+          $textTag = '🔵 Group';
+          break;
+        case '3':
+          $textTag = '🟡 Daily';
+          break;
+        case '4':
+          $textTag = '🟠 Attack';
+          break;
+      }
+
+      $end_date = $mission['end_date'];
+      $status = $mission['status'];
+
+      switch ($status) {
+        case '0':
+          $textStatus = 'Pending';
+          break;
+        case '1':
+          $textStatus = 'In progress';
+          break;
+        case '2':
+          $textStatus = 'Completed';
+          break;
+        case '3':
+          $textStatus = 'Deleted';
+          break;
+      }
+
+    ?>
+
+      <form class="mx-auto max-w-lg space-y-1" method="POST">
+        <div class="space-y-5">
+          <div class="space-y-2 wtext-white">
+            <label for="title" class="ml-5 font-medium"> Mission Title</label>
+            <input id="title" name="title" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" value="<?php echo $title ?>">
+          </div>
+          <div class="space-y-2">
+            <label for="character" class="ml-5 font-medium ">Assigned to</label>
+            <input id="character" name="character" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" value="<?php echo $character ?>">
+          </div>
+          <div class="space-y-2">
+            <label for="tag" class="ml-5 font-medium">Tag</label>
+            <select id="tag" name="tag" type="tag" required unselect class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
+              <option selected hidden value="<?php echo $tag ?>"><?php echo $textTag ?></option>
+              <option value="1">🟢 Defense</option>
+              <option value="2">🔵 Group</option>
+              <option value="3">🟡 Daily</option>
+              <option value="4">🟠 Attack</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label for="end_date" class="ml-5 font-medium ">Mission finish date</label>
+            <input id="end_date" name="end_date" required value="<?php echo $end_date ?>" type="date" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 bg-nones placeholder-white">
+          </div>
+          <div class="space-y-2">
+            <label for="status" class="ml-5 font-medium ">Status</label>
+            <select id="status" name="status" required type="status" unselect class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
+              <option selected hidden value="<?php echo $status ?>"><?php echo $textStatus ?></option>
+              <option value="0">Pending</option>
+              <option value="1">In progress</option>
+              <option value="2">Completed</option>
+              <option value="3">Deleted</option>
+            </select>
+          </div>
         </div>
-        <div class="space-y-2">
-          <label for="username" class="ml-5 font-medium ">Assigned to</label>
-          <input id="username" name="username" type="text" autocomplete="username" required="" autofill class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" placeholder="Value of mission selected">
-        </div>
-        <div class="space-y-2">
-          <label for="tag" class="ml-5 font-medium">Tag</label>
-          <select id="tag" name="tag" type="tag" required unselect class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
-            <option selected disabled hidden class="text-white/30">Value of mission selected</option>
-            <option class="" value="attack">🟠 Attack</option>
-            <option value="defense">🟢 Defense</option>
-            <option value="group">🔵 Group</option>
-            <option value="today">🟡 Daily</option>
-          </select>
-        </div>
-        <div class="space-y-2">
-          <label for="date-end" class="ml-5 font-medium ">Mission finish date</label>
-          <input id="date-end" name="date-end" placeholder="Value of mission selected" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 bg-nones placeholder-white">
-        </div>
-      </div>
+      <?php
+    }
+      ?>
       <div class="flex pt-10 place-content-end space-x-4">
-        <button onclick="window.location.href='missionlist.html'" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+        <!-- Botón para cancelar operación  -->
+        <button id="cancel" name="cancel" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
           Cancel
         </button>
-        <button onclick="window.location.href='missionlist.html'" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+        <!-- Botón para aceptar operación  -->
+        <button id="editMission" name="editMission" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
           OK
         </button>
       </div>
-    </form>
+      </form>
   </div>
+
+  <!-- Incrustar modal-field  -->
+  <?php
+  require_once(VIEW_PATH . 'scripts/error/modal-field.phtml');
+  ?>
+
 </div>

@@ -1,0 +1,32 @@
+users.json[
+    "username": "",
+    "name": "",
+    "lastname": "",
+    "mail": "",
+    "password": ""
+]
+
+username - missions.json
+
+[
+    "title": "",
+    "character": "",
+    "tag": "" [
+        "1": "🟢 Defense",
+        "2": "🔵 Group",
+        "3": "🟡 Daily",
+        "4": "🟠 Attack"
+    ],
+    "end_date": "",
+    "status": "" [
+        "0": "pending",
+        "1": "in progress",
+        "2": "completed",
+        "3": "deleted" 
+    ],
+    "starred": "" [
+        "0": "no",
+        "1": "yes"
+    ],
+    "date_record": ""
+]

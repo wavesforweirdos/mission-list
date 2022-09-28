@@ -1,0 +1,38 @@
+[
+    {
+        "title": "First win of the day",
+        "character": "Warwick",
+        "tag": "3",
+        "end_date": "2022-09-28",
+        "status": 2,
+        "starred": 0,
+        "date_record": "2022-09-07"
+    },
+    {
+        "title": "Enter the Draconic Lands",
+        "character": "Sona",
+        "tag": "2",
+        "end_date": "2022-09-28",
+        "status": 0,
+        "starred": 1,
+        "date_record": "2022-09-05"
+    },
+    {
+        "title": "Kill 200 minions",
+        "character": "Varus",
+        "tag": "4",
+        "end_date": "2022-09-28",
+        "status": 3,
+        "starred": 0,
+        "date_record": "2022-09-05"
+    },
+    {
+        "title": "Pentakill",
+        "character": "Yii",
+        "tag": "4",
+        "end_date": "2022-09-28",
+        "status": 0,
+        "starred": 0,
+        "date_record": "2022-09-28"
+    }
+]

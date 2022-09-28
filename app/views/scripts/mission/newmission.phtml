@@ -17,17 +17,17 @@
         </div>
         <div class="space-y-2">
           <label for="tag" class="ml-5 font-medium">Tag</label>
-          <select id="tag" name="tag" type="tag" unselect class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
+          <select id="tag" name="tag" type="tag" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
             <option selected disabled hidden>Choose a tag</option>
-            <option value="0">🟠 Attack</option>
             <option value="1">🟢 Defense</option>
             <option value="2">🔵 Group</option>
             <option value="3">🟡 Daily</option>
+            <option value="4">🟠 Attack</option>
           </select>
         </div>
         <div class="space-y-2">
           <label for="end_date" class="ml-5 font-medium ">Mission finish date</label>
-          <input id="end_date" name="end_date" placeholder="dd/mm/aaaa" type="date" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 bg-nones placeholder-white/30">
+          <input id="end_date" name="end_date" placeholder="aaaa/mm/dd" type="date" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 bg-nones placeholder-white/30">
         </div>
       </div>
       <div class="flex pt-10 place-content-end space-x-4">
@@ -43,33 +43,8 @@
     </form>
   </div>
 
-
-  <!-- Modal para informar que alguno de los campos no está completo  -->
+  <!-- Incrustación modal-field para advertir la falta de valores en algún input-->
   <?php
-  $modal = 'hidden';
-  if (isset($_POST['newMission']) && (!empty($_POST['title']) || !empty($_POST['character']) || !empty($_POST['tag']) || !empty($_POST['end_date']))) {
-    $message = $_SESSION['error'];
-    $modal = '';
+  require_once(VIEW_PATH . 'scripts/error/modal-field.phtml');
   ?>
-    <div id="modal-input" class="modal fade fixed <?php echo $modal ?> mt-80 max-w-full h-full outline-none overflow-x-hidden overflow-y-auto transition-opacity" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
-      <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none outline-none">
-        <div class="modal-content border-none outline-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-2xl outline-none text-current">
-          <!-- Modal header: botón para cerrar modal  -->
-          <button onclick="document.getElementById('modal-input').style.display='none'" type="button" class="modal-header relative flex flex-shrink-0 flex-wrap items-center justify-end mt-5 mx-5 text-green-900 text-sm font-semibold"><i class="fa-solid fa-xmark"></i></button>
-          <!-- Modal body: mensaje a mostrar  -->
-          <div class="modal-body relative mt-5 mx-10 text-green-900 text-lg font-semibold">
-            <p><?php echo $message;
-                unset($_SESSION['error']); ?></p>
-          </div>
-          <!-- Modal footer: botón OK  -->
-          <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-center p-7 rounded-b-md">
-            <button onclick="document.getElementById('modal-input').style.display='none'" type="button" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  <?php } ?>
-
 </div>
