@@ -19,6 +19,9 @@ $routes = array(
 	
 	'/mission' => 'mission#index',
 	'/newmission' => 'mission#newmission',
+	'/editmission' => 'mission#editmission',
+
+	'/logout' => 'user#logout'
 );
 
 ?>
