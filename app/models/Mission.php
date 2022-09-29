@@ -23,7 +23,16 @@ class Mission
         } else {
             $missionFile = json_decode(file_get_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json'), true);
         }
+
         $this->missionArray = $missionFile;
+
+        //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
+        $keys = array_column($this->missionArray, 'status');
+        array_multisort($keys, SORT_ASC, $this->missionArray);
+
+        // echo '<pre>';
+        // print_r($this->missionArray);
+        // echo '</pre>';
     }
 
     //-----------------------GETTERS-----------------------
