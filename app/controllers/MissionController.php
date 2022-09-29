@@ -10,7 +10,6 @@ class MissionController extends Controller
 		$_SESSION['missionArray'] = $mission->getAllMissions();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
 			if (isset($_POST['addmission'])) {
 				//añadir mission
 				header('Location: newmission');
@@ -56,9 +55,9 @@ class MissionController extends Controller
 				$query = $_POST['searchName'];
 				$_SESSION['searchName'] = $query;
 				$_SESSION['missionArray'] = $mission->filterMission($title);
-			} elseif (isset($_POST['deletemissions'])) {
+			} elseif (isset($_POST['deleteAll'])) {
 				//eliminar todas las misiones de la BD
-				$data = [];
+				$data = '[]';
 				$mission->setAllMissions($data);
 				header('Location: mission');
 			}

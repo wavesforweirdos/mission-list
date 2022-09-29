@@ -12,7 +12,6 @@ class Mission
     private $date_record;
     */
     private $missionArray;
-    private $filteredArray;
 
     public function __construct($user)
     {
@@ -60,7 +59,8 @@ class Mission
     //-----------------------SETTERS-----------------------
     public function setAllMissions($data)
     {
-        $this->missionArray = $data;
+        $this->missionArray = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
+
         return $this->missionArray;
     }
 
