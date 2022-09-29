@@ -65,7 +65,7 @@ class Mission
             "character": "' . $character . '",
             "tag": "' . $tag . '",
             "end_date": "' . $end_date . '",
-            "status": 0, 
+            "status": 1, 
             "starred": 0,
             "date_record": "' . date("Y-m-d") . '"
             }');
@@ -77,7 +77,7 @@ class Mission
                     'character' => $character,
                     'tag' => $tag,
                     'end_date' => $end_date,
-                    'status' => 0, //pending
+                    'status' => 1, //pending
                     'starred' => 0, //no starred
                     'date_record' => date("Y-m-d")
                 ]; //lanzar error si el nombre de la misión ya existe
@@ -104,7 +104,7 @@ class Mission
                     if ($val['status'] != 3) {
                         $missionFile[$key]['status'] = 3;
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 0;
+                        $missionFile[$key]['status'] = 1;
                     }
                 }
             }
@@ -127,7 +127,7 @@ class Mission
                         $missionFile[$key]['status'] = 2;
                         $missionFile[$key]['end_date'] = date("Y-m-d");
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 0;
+                        $missionFile[$key]['status'] = 1;
                     }
                 }
             }

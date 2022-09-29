@@ -34,6 +34,10 @@ class MissionController extends Controller
 				$title = $_POST['missionName'];
 				$mission->starredMission($title);
 				header('Location: mission');
+			} elseif (isset($_POST['pendingFilter'])) {
+				//filtrar misiones pendientes
+				$status = 1;
+				$_SESSION['missionArray'] = $mission->filterMission($status);
 			} elseif (isset($_POST['starredFilter'])) {
 				//filtrar misiones destacadas
 				$starred = 'starred';

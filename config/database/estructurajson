@@ -19,8 +19,7 @@ username - missions.json
     ],
     "end_date": "",
     "status": "" [
-        "0": "pending",
-        "1": "in progress",
+        "1": "pending",
         "2": "completed",
         "3": "deleted" 
     ],
