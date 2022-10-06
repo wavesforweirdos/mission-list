@@ -1,29 +1,28 @@
 <?php
-class Mission
+class Mission extends Model
 {
-    private $username;
     /*
+    private $id;
     private $title;
-    private $character;
+    private $champ;
     private $tag;
     private $end_date;
     private $status;
     private $starred;
     private $date_record;
     */
+    private $user_id;
     private $missionArray;
 
-    public function __construct($user)
+    public function __construct($id)
     {
-        $this->username = $user;
+        $this->user_id = $id;
 
-        if (!file_exists(CONFIG_PATH . '/database/' . $this->username . '-missions.json')) {
-            $missionFile = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', '[]'));
-        } else {
-            $missionFile = json_decode(file_get_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json'), true);
-        }
+        $db = new Model();
+        $db->_setTable('mission');
 
-        $this->missionArray = $missionFile;
+        $this->missionArray = $db->fetchSome($this->user_id);
+        $this->missionArray = json_decode(json_encode($this->missionArray), true);
 
         //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
         $keys = array_column($this->missionArray, 'status');
@@ -41,7 +40,7 @@ class Mission
         return $this->missionArray;
     }
 
-    public function getMission($title)
+    public function getMission($id)
     {
         $missionFile = $this->missionArray;
 
@@ -49,148 +48,157 @@ class Mission
 
             foreach ($missionFile as $key => $val) {
 
-                if ($val['title'] === $title) {
+                if ($val['id'] == $id) {
                     return $missionFile[$key];
                 }
             }
         }
     }
 
-    //-----------------------SETTERS-----------------------
-    public function setAllMissions($data)
+    public function getLastId()
     {
-        $this->missionArray = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
+        $db = new Model();
+        $db->_setTable('mission');
 
-        return $this->missionArray;
+        $lastId = count($db->fetchAll());
+        return $lastId;
     }
 
     //añadir mission
-    public function addMission($title, $character, $tag, $end_date)
+    public function addMission($id, $title, $champ, $tag, $end_date, $user_id)
     {
+        $db = new Model();
+        $db->_setTable('mission');
+
         if (!$this->missionArray) {
-            //si no existe un array de misiones, lo crea y añade el usuario
-            $this->missionArray = file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', '
-            { "title":"' . $title . '",
-            "character": "' . $character . '",
-            "tag": "' . $tag . '",
-            "end_date": "' . $end_date . '",
-            "status": 1, 
-            "starred": 0,
-            "date_record": "' . date("Y-m-d") . '"
-            }');
+            //si no existe un array de misiones, lo crea
+
+            $this->missionArray = $db->fetchSome($this->user_id);
+            $this->missionArray = json_decode(json_encode($this->missionArray), true);
+        }
+
+        if (!$this->CheckMission()) {
+            //existe el array de missiones, pero el nombre de la misión no existe
+            $user_id = $this->user_id;
+            $newMission = [
+                $id,
+                $title,
+                $champ,
+                $tag,
+                $end_date,
+                1, //pending
+                0, //no starred
+                date("Y-m-d"),
+                $user_id
+            ];
+            $db->save($newMission);
         } else {
-            if (!$this->CheckMission()) {
-                //si existe la base de datos y el nombre de la mision no existe
-                $newMission = [
-                    'title' => $title,
-                    'character' => $character,
-                    'tag' => $tag,
-                    'end_date' => $end_date,
-                    'status' => 1, //pending
-                    'starred' => 0, //no starred
-                    'date_record' => date("Y-m-d")
-                ]; //lanzar error si el nombre de la misión ya existe
-
-                $this->missionArray[] = $newMission;
-                $json = json_encode($this->missionArray, JSON_PRETTY_PRINT);
-                file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $json);
-            }
+            //error: el nombre de la misión ya existe
         }
     }
 
-    public function deleteMission($title)
+    public function deleteMission($id)
     {
+        $db = new Model();
+        $db->_setTable('mission');
+
         $missionFile = $this->missionArray;
-
         if (is_array($missionFile)) {
-            foreach ($missionFile as $key => $val) {
-                //echo $val['title'];
-                if ($val['title'] === $title) {
-
-                    //cambiamos el statos a 'deleted' == 3
-                    $missionFile[$key]['status'] = 3;
-
-                    if ($val['status'] != 3) {
-                        $missionFile[$key]['status'] = 3;
+            foreach ($missionFile as $mission) {
+                if ($mission['id'] == $id) {
+                    if ($mission['status'] != 3) {
+                        //cambiamos el status a 'deleted' == 3
+                        $status = 3;
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 1;
+                        $status = 1;
                     }
+                    $update = [
+                        'id' => $mission['id'],
+                        'status' => $status
+                    ];
                 }
-            }
-
-            $missionFile = json_encode($missionFile, JSON_PRETTY_PRINT);
-            file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $missionFile);
+            };
         }
+        $db->save($update);
     }
 
-    public function completeMission($title)
+    public function completeMission($id)
     {
+        $db = new Model();
+        $db->_setTable('mission');
+
         $missionFile = $this->missionArray;
-
         if (is_array($missionFile)) {
-            foreach ($missionFile as $key => $val) {
-
-                if ($val['title'] === $title) {
-
-                    if ($val['status'] != 2) {
-                        $missionFile[$key]['status'] = 2;
-                        $missionFile[$key]['end_date'] = date("Y-m-d");
+            foreach ($missionFile as $mission) {
+                if ($mission['id'] == $id) {
+                    if ($mission['status'] != 2) {
+                        //cambiamos el status a 'completed' == 2
+                        $status = 2;
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 1;
+                        $status = 1;
                     }
+                    $update = [
+                        'id' => $mission['id'],
+                        'status' => $status,
+                        'end_date' => date("Y-m-d")
+                    ];
                 }
-            }
-
-            $missionFile = json_encode($missionFile, JSON_PRETTY_PRINT);
-            file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $missionFile);
+            };
         }
+        $db->save($update);
     }
 
-    public function editMission($title, $modified_title, $character, $tag, $end_date, $status)
+    public function editMission($id, $title, $champ, $tag, $end_date, $status)
     {
+        $db = new Model();
+        $db->_setTable('mission');
 
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
-            foreach ($missionFile as $key => $val) {
+            foreach ($missionFile as $mission) {
 
-                if ($val['title'] === $title) {
-
-                    //cambiamos los valores por los especificados en los inputs del formulario
-                    $missionFile[$key]['title'] = $modified_title;
-                    $missionFile[$key]['character'] = $character;
-                    $missionFile[$key]['tag'] = $tag;
-                    $missionFile[$key]['end_date'] = $end_date;
-                    $missionFile[$key]['status'] = $status;
+                if ($mission['id'] == $id) {
+                    $update = [
+                        'id' => $mission['id'],
+                        'title' => $title,
+                        'champ' => $champ,
+                        'tag' => $tag,
+                        'status' => $status,
+                        'end_date' => $end_date,
+                    ];
+                    echo '<pre>';
+                    print_r($update);
+                    echo '</pre>';
                 }
-            }
-
-            $missionFile = json_encode($missionFile, JSON_PRETTY_PRINT);
-            file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $missionFile);
+            };
         }
+        $db->save($update);
     }
 
-    public function starredMission($title)
+    public function starredMission($id)
     {
+        $db = new Model();
+        $db->_setTable('mission');
+
         $missionFile = $this->missionArray;
-
         if (is_array($missionFile)) {
-            foreach ($missionFile as $key => $val) {
-
-                if ($val['title'] === $title) {
-
-                    //cambiamos starred al valor contrario 
-                    if ($val['starred'] == 0) {
-                        $missionFile[$key]['starred'] = 1;
-                    } else {
-                        $missionFile[$key]['starred'] = 0;
+            foreach ($missionFile as $mission) {
+                if ($mission['id'] == $id) {
+                    if ($mission['starred'] == 0) {
+                        //cambiamos starred al valor contrario 
+                        $starred = 1;
+                    } else { //sino lo devolveremos por defecto a pending
+                        $starred = 0;
                     }
+                    $update = [
+                        'id' => $mission['id'],
+                        'starred' => $starred,
+                    ];
                 }
-            }
-
-            $missionFile = json_encode($missionFile, JSON_PRETTY_PRINT);
-            file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $missionFile);
+            };
         }
+        $db->save($update);
     }
 
     public function filterMission($filter)
@@ -231,7 +239,12 @@ class Mission
         }
     }
 
-
+    public function deleteData($user_id)
+    {
+        $db = new Model();
+        $db->_setTable('mission');
+        $db->delete($user_id);
+    }
     public function CheckMission()
     {
 
