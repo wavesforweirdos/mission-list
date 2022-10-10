@@ -1,4 +1,4 @@
-<div class="min-h-full p-20 flex justify-center">
+<div class="flex items-center justify-center h-screen mx-12">
   <div class="max-w-lg w-full space-y-10 flex-col justify-center">
     <div class="space-y-5">
       <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
@@ -13,11 +13,11 @@
         </div>
         <div class="space-y-2">
           <label for="name" class="ml-5 font-medium text-white">Your name</label>
-          <input id="name" name="name" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder=" <?php if (!(empty($_POST['singup-form']))) {$name;} else {echo "your name here...";} ?>">
+          <input id="name" name="name" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder=" <?php if (!(empty($_POST['singup-form']))) {$name;} else {echo "Your name here...";} ?>">
         </div>
         <div class=" space-y-2">
           <label for="lastname" class="ml-5 font-medium text-white">Your lastname</label>
-          <input id="lastname" name="lastname" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="<?php if (!(empty($_POST['singup-form']))) {$lastname;} else {echo "now, your lasname...";}?>">
+          <input id="lastname" name="lastname" type="text" autocomplete="username" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md placeholder-white/30 text-white focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600" placeholder="<?php if (!(empty($_POST['singup-form']))) {$lastname;} else {echo "Now, your lasname...";}?>">
         </div>
         <div class=" space-y-2">
           <label for="email" class="ml-5 font-medium text-white">Email</label>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="flex justify-end">
-        <div class="text-sm">
+        <div class="">
           <a href="./" class="font-medium text-lime-600 hover:text-lime-200"> Log in</a>
         </div>
       </div>
