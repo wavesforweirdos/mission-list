@@ -19,11 +19,11 @@ class UserController extends Controller
 
                 if ($user->loginUser($password)) {
 
+                    $_SESSION['idUser'] = $user->getId();
                     $_SESSION['username'] = $user->getUsername();
                     $_SESSION['name'] = $user->getName();
                     $_SESSION['lastname'] = $user->getLastname();
                     $_SESSION['mail'] = $user->getMail();
-                    $_SESSION['missions'] = $user->getMissions();
 
                     //redireccionar hacia otra pagina
                     header('Location: mission');
@@ -59,13 +59,12 @@ class UserController extends Controller
                 $user = new User($username, $password);
 
                 $user->registerUser($username, $name, $lastname, $mail, $password);
-
+                
                 if (isset($_SESSION)) {
                     $_SESSION['username'] = $user->getUsername();
                     $_SESSION['name'] = $user->getName();
                     $_SESSION['lastname'] = $user->getLastname();
                     $_SESSION['mail'] = $user->getMail();
-                    $_SESSION['missions'] = $user->getMissions();
 
                     //redirigimos a la pagina de login para que inicie sesión (recordamos el username utilizado)
                     header('Location: index');
