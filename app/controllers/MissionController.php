@@ -123,4 +123,5 @@ class MissionController extends Controller
 			}
 		}
 	}
+
 }
