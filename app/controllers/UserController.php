@@ -78,4 +78,11 @@ class UserController extends Controller
             }
         }
     }
+
+    public function logoutAction()
+    {
+        //el ususario quiere desconectarse
+        session_destroy();
+        header('Location: index');
+    }
 }

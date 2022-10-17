@@ -2,5 +2,13 @@
     <h1 class="text-3xl font-bold"> ¡ Error 404: THIS PAGE DOES NOT EXISTS ! </h1>
     <p class="text-sm text-white/40"><?php echo $this->error; ?></p>
     <br>
-    <h2 class="text-xl text-white/40"><a href="./index">click to return</a></h2>
+    <h2 class="text-xl text-white/40">
+        <a href="
+        <?php if ($_SESSION['missionArray']) {
+            echo './mission';
+        } else {
+            echo './index';
+        } ?>
+        ">click to return</a>
+    </h2>
 </div>
