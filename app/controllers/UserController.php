@@ -3,7 +3,7 @@ class UserController extends Controller
 {
     public function indexAction()
     {
-        echo 'Esto es indexAction <br>';
+        //echo 'Esto es indexAction <br>';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function signinAction()
     {
-        echo 'Esto es signinAction <br>';
+        //echo 'Esto es signinAction <br>';
 
         if (!isset($_SESSION)) {
             session_start();
@@ -77,9 +77,5 @@ class UserController extends Controller
                 header('Location: index');
             }
         }
-    }
-    public function loginAction()
-    {
-        echo 'Esto es loginAction';
     }
 }

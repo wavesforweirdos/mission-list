@@ -6,7 +6,6 @@ class User
     public $name;
     public $lastname;
     private $mail;
-    private $missions;
     private $pwd_hashed;
 
     private $usersArray;
@@ -16,13 +15,12 @@ class User
         $this->username = $user;
         $this->pwd_hashed = password_hash($password, PASSWORD_DEFAULT);
         //devuelve una contraseña encriptada o hash de contraseña tambien podemos usar md5($password) pero no es específico para contraseñas y existen webs que descifran fácilmente las contraseñas md5
-        $this->missions = [];
 
-        if (!file_exists(CONFIG_PATH . 'todo.json')) {
-            $jsonFile = json_decode(file_put_contents(CONFIG_PATH . '/todo.json', '[]'));
+        if (!file_exists(CONFIG_PATH . '/database/users.json')) {
+            $jsonFile = json_decode(file_put_contents(CONFIG_PATH . '/database/users.json', '[]'));
             // file_put_contents crea, en el caso de no existir el fichero, y añade el contenido que se le indique
         } else {
-            $jsonFile = json_decode(file_get_contents(CONFIG_PATH . '/todo.json'), true);
+            $jsonFile = json_decode(file_get_contents(CONFIG_PATH . '/database/users.json'), true);
             // file_get_contents transmite un fichero completo a un string
             // json_decode decodifica un string de JSON en un array
         }
@@ -46,10 +44,6 @@ class User
     public function getMail()
     {
         return $this->mail;
-    }
-    public function getPassword()
-    {
-        return $this->pwd_hashed;
     }
     public function getMissions()
     {
@@ -88,13 +82,12 @@ class User
 
         if (!$this->usersArray) {
             //si no existe ninguna base de datos, la crea y añade el usuario
-            $this->usersArray = file_put_contents(CONFIG_PATH . 'todo.json', '
+            $this->usersArray = file_put_contents(CONFIG_PATH . '/database/users.json', '
             { "username":"' . $username . '",
             "name": "' . $name . '",
             "lastname": "' . $lastname . '",
             "mail": "' . $mail . '",
-            "password": "' . password_hash($password, PASSWORD_DEFAULT) . '",
-            "missions": []
+            "password": "' . password_hash($password, PASSWORD_DEFAULT) . '"
             }');
         } else {
             if (!$this->CheckUser()) {
@@ -105,13 +98,12 @@ class User
                     'name' => $name,
                     'lastname' => $lastname,
                     'mail' => $mail,
-                    'password' => password_hash($password, PASSWORD_DEFAULT),
-                    'missions' => []
+                    'password' => password_hash($password, PASSWORD_DEFAULT)
                 ];
 
                 $this->usersArray[] = $newUser;
                 $json = json_encode($this->usersArray, JSON_PRETTY_PRINT);
-                file_put_contents(CONFIG_PATH . 'todo.json', $json);
+                file_put_contents(CONFIG_PATH . '/database/users.json', $json);
             }
         }
     }
@@ -120,7 +112,7 @@ class User
     public function logOut()
     {
         if (isset($_POST['logout'])) {
-            closeSession();
+            session_destroy();
         }
     }
 

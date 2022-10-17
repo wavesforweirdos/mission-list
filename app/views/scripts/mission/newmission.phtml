@@ -1,0 +1,50 @@
+<!-- Estructura de formulario para añadir una misión-->
+<div class="min-h-full p-20 flex justify-center text-white">
+  <div class="max-w-lg w-full space-y-10 flex-col justify-center">
+    <div class="space-y-5">
+      <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
+      <h1 class="text-center text-4xl font-bold">New Mission</h1>
+    </div>
+    <form class="mx-auto max-w-lg space-y-1" method="POST">
+      <div class="space-y-5">
+        <div class="space-y-2  text-white">
+          <label for="title" class="ml-5 font-medium"> A New Mission Title</label>
+          <input id="title" name="title" type="text" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white/30" placeholder="Come up with a task name...">
+        </div>
+        <div class="space-y-2">
+          <label for="character" class="ml-5 font-medium ">Assigned to</label>
+          <input id="character" name="character" type="text" autocomplete="username" autofill class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white/30" placeholder="Assign to a character">
+        </div>
+        <div class="space-y-2">
+          <label for="tag" class="ml-5 font-medium">Tag</label>
+          <select id="tag" name="tag" type="tag" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
+            <option selected disabled hidden>Choose a tag</option>
+            <option value="1">🟢 Defense</option>
+            <option value="2">🔵 Group</option>
+            <option value="3">🟡 Daily</option>
+            <option value="4">🟠 Attack</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label for="end_date" class="ml-5 font-medium ">Mission finish date</label>
+          <input id="end_date" name="end_date" placeholder="aaaa/mm/dd" type="date" class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 bg-nones placeholder-white/30">
+        </div>
+      </div>
+      <div class="flex pt-10 place-content-end space-x-4">
+        <!-- Botón para cancelar operación  -->
+        <button id="cancel" name="cancel" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+          Cancel
+        </button>
+        <!-- Botón para aceptar operación  -->
+        <button id="newMission" name="newMission" type="submit" class="w-32 group relative flex justify-center py-2 px-4 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+          OK
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Incrustación modal-field para advertir la falta de valores en algún input-->
+  <?php
+  require_once(VIEW_PATH . 'scripts/error/modal-field.phtml');
+  ?>
+</div>

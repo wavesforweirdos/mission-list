@@ -18,6 +18,15 @@ $routes = array(
 	'/signin' => 'user#signin',
 	
 	'/mission' => 'mission#index',
+	'/newmission' => 'mission#newmission',
+<<<<<<< Updated upstream
+=======
+	'/editmission' => 'mission#editmission',
+	'/deletemissions' => 'mission#editmission',
+	'/destroy' => 'mission#index',
+
+	'/logout' => 'user#logout'
+>>>>>>> Stashed changes
 );
 
 ?>
