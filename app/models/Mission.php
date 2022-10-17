@@ -62,6 +62,7 @@ class Mission
         $this->missionArray = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
 
         return $this->missionArray;
+
     }
 
     //añadir mission
