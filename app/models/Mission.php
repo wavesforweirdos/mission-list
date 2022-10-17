@@ -51,8 +51,12 @@ class Mission
     //-----------------------SETTERS-----------------------
     public function setAllMissions($data)
     {
-        $this->missionArray = $data;
-        return $this->missionArray;
+        
+            $missionFile = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
+        
+        return $missionFile;
+
+
     }
 
     //añadir mission
