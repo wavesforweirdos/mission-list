@@ -3,7 +3,7 @@
 
     $modal = 'hidden';
     if (isset($_POST['newMission']) || isset($_POST['editMission'])){ 
-    if (empty($_POST['title']) || empty($_POST['character']) || empty($_POST['tag']) || empty($_POST['end_date'])) {
+    if (empty($_POST['title']) || empty($_POST['champ']) || empty($_POST['tag']) || empty($_POST['end_date'])) {
         $message = $_SESSION['error'];
         $modal = '';
     ?>
