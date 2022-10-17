@@ -10,106 +10,72 @@ class Model
 
 	public function __construct()
 	{
-		//parse_ini_file — Analiza un fichero de configuración
-		$settings = parse_ini_file(CONFIG_PATH . 'settings.ini', true);
-
-		// conectamos a la base de datos
 		try {
-			$this->_dbh = new PDO(
-				sprintf(
-					"%s:host=%s;dbname=%s",
-					$settings['database']['driver'],
-					$settings['database']['host'],
-					$settings['database']['dbname']
-				),
-				$settings['database']['user'],
-				$settings['database']['password'],
-				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
-			);
+			$user = "itacademy";
+			$pwd = "cortesia";
+			$hostname = '@cluster0.s9viag0.mongodb.net';
 
-			$this->init();
-		} catch (PDOException) {
-			//sino existe, la creamos
-			$this->_dbh = new PDO(
-				sprintf(
-					"%s:host=%s;",
-					$settings['database']['driver'],
-					$settings['database']['host']
-				),
-				$settings['database']['user'],
-				$settings['database']['password'],
-				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
-			);
+			$bd = "missionlist";
 
-			$this->init();
-			$this->createDB();
+			$uri = 'mongodb+srv://' . $user . ':' . $pwd . $hostname . '/?retryWrites=true&w=majority';
+			$mongo = new MongoDB\Client($uri);
+
+			$this->_dbh = $mongo->selectDatabase($bd);
+			return $this->_dbh;
+		} catch (\Throwable $th) {
+			return $th->getMessage();
 		}
 	}
 
-	public function init()
-	{
-	}
-
-	public function createDB()
-	{
-		$sql = "CREATE DATABASE IF NOT EXISTS `mission_list`; 
-		USE `mission_list`;
-		DROP TABLE IF EXISTS `mission`;
-		CREATE TABLE `mission` (
-		  `id` int DEFAULT NULL,
-		  `title` text,
-		  `champ` text,
-		  `tag` int DEFAULT NULL,
-		  `end_Date` text,
-		  `status` int DEFAULT NULL,
-		  `starred` int DEFAULT NULL,
-		  `date_record` text,
-		  `user_id` int DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-		DROP TABLE IF EXISTS `user`;
-		CREATE TABLE `user` (
-		  `id` int unsigned NOT NULL,
-		  `username` varchar(16) NOT NULL,
-		  `name` varchar(45) NOT NULL,
-		  `lastname` varchar(45) NOT NULL,
-		  `mail` varchar(255) NOT NULL,
-		  `password` varchar(100) NOT NULL,
-		  PRIMARY KEY (`id`),
-		  UNIQUE KEY `username_UNIQUE` (`username`),
-		  UNIQUE KEY `password_UNIQUE` (`password`),
-		  UNIQUE KEY `id_UNIQUE` (`id`),
-		  UNIQUE KEY `mail_UNIQUE` (`mail`)
-		) ENGINE = InnoDB DEFAULT CHARSET=utf8mb3;";
-
-		$this->_dbh->exec($sql);
-	}
 	/**
 	 * Sets the database table the model is using
 	 * @param string $table the table the model is using
 	 */
-	protected function _setTable($table)
+
+
+	protected function _getTable($collectionName = "users")
 	{
-		$this->_table = $table;
+		try {
+			$mongo = $this->__construct();
+			$collection = $mongo->$collectionName;
+			$data = $collection->find();
+
+			$values = array();
+			foreach ($data as $value) {
+				$values[] = $value;
+			};
+
+			$this->_table = $values;
+
+			return $this->_table;
+		} catch (\Throwable $th) {
+			return $th->getMessage();
+		}
 	}
 
 	public function fetchAll()
 	{
-		$sql = 'select * from ' . $this->_table;
+		$data = $this->_table;
 
-		$statement = $this->_dbh->prepare($sql); //PDO::prepare — Prepara una sentencia para su ejecución y devuelve un objeto sentencia
-		$statement->execute(); //PDOStatement::execute — Ejecuta una sentencia preparada
-
-		return $statement->fetchAll(PDO::FETCH_OBJ); //PDOStatement::fetchAll — Devuelve un array que contiene todas las filas del conjunto de resultados
+		if (is_array($data)) {
+			foreach ($data as $key => $val) {
+				$data[] = $val;
+			}
+			return $data;
+		}
 	}
+
 	public function fetchSome($user_id)
 	{
-		$sql = 'select * from ' . $this->_table;
-		$sql .= ' where user_id = ?';
-
-		$statement = $this->_dbh->prepare($sql);
-		$statement->execute(array($user_id));
-
-		return $statement->fetchAll(PDO::FETCH_OBJ); //PDOStatement::fetch — Obtiene la siguiente fila de un conjunto de resultados
+		$data = array();
+		if (is_array($this->_table)) {
+			foreach ($this->_table as $val) {
+				if ($val['user_id'] == $user_id) {
+					$data[] = $val;
+				}
+			}
+			return $data;
+		}
 	}
 
 	/**
@@ -118,57 +84,18 @@ class Model
 	 * @param array $data the data to save
 	 * @return int the id the data was saved under
 	 */
-	public function save($data = array())
+	public function save($collectionName, $data = array(), $id = 0)
 	{
-		$sql = '';
+		$mongo = $this->__construct();
+		$collection = $mongo->$collectionName;
 
-		$values = array();
-
-		if (array_key_exists('id', $data)) {
-			//array_key_exists — Verifica si el índice o clave dada ('id') existe en el array
-			$sql = 'update ' . $this->_table . ' set ';
-
-			$first = true;
-			foreach ($data as $key => $value) {
-				if ($key != 'id') {
-					$sql .= ($first == false ? ',' : '') . ' ' . $key . ' = ?';
-
-					$values[] = $value;
-
-					$first = false;
-				}
-			}
-
-			// adds the id as well
-			$values[] = $data['id'];
-
-			$sql .= ' where id = ?'; // . $data['id'];
-			echo $sql;
-
-			$statement = $this->_dbh->prepare($sql);
-			return $statement->execute($values);
+		if (array_key_exists('_id', $data)) {
+			$update = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectId($id)], ['$set' => $data], ['upsert' => true]);
+			return $update;
 		} else {
-			$sql = 'insert into ' . $this->_table;
-			$sql .= ' values (';
-
-			$dataValues = array_values($data);
-			$first = true;
-			foreach ($dataValues as $value) {
-				$sql .= ($first == false ? ',?' : '?');
-
-				$values[] = $value;
-
-				$first = false;
-			}
-
-			$sql .= ')';
-
-			$statement = $this->_dbh->prepare($sql);
-			if ($statement->execute($values)) {
-				return $this->_dbh->lastInsertId();
-			}
+			$update = $collection->insertOne($data);
+			return $update;
 		}
-
 		return false;
 	}
 
@@ -177,9 +104,13 @@ class Model
 	 * @param int $user_id the user_id of the entry to delete
 	 * @return boolean true if all went well, else false.
 	 */
-	public function delete($id)
+	public function delete($collectionName, $id)
 	{
-		$statement = $this->_dbh->prepare("delete from " . $this->_table . " where user_id = ?");
-		return $statement->execute(array($id));
+		$mongo = $this->__construct();
+		$collection = $mongo->$collectionName;
+
+		echo $id;
+		$update = $collection->deleteMany(['user_id' => new MongoDB\BSON\ObjectId($id)]);
+		return $update;
 	}
 }

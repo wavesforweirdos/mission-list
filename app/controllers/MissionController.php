@@ -67,20 +67,19 @@ class MissionController extends Controller
 	{
 		//echo 'Esto es newMissionAction';
 		$user_id = $_SESSION['idUser'];
-
+		
 		$missions = new Mission($user_id);
 		$_SESSION['missionArray'] = $missions->getAllMissions();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if (isset($_POST['newMission']) && !empty($_POST['title']) && !empty($_POST['champ']) && !empty($_POST['tag']) && !empty($_POST['end_date'])) {
 				//el ususario quiere añadir una mision y todos los campos han sido añadidos
-				$id = $missions->getLastId();
 				$title = $_POST['title'];
 				$champ = $_POST['champ'];
 				$tag = $_POST['tag'];
 				$end_date = $_POST['end_date'];
 
-				$missions->addMission($id, $title, $champ, $tag, $end_date, $user_id);
+				$missions->addMission($title, $champ, $tag, $end_date, $user_id);
 				header('Location: mission');
 			} elseif (isset($_POST['newMission']) && (empty($_POST['title']) || empty($_POST['champ']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
 				//alguno de los campos no ha sido enviado

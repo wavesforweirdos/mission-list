@@ -9,26 +9,26 @@ class User extends Model
     private $mail;
     private $pwd_hashed;
 
-    private $usersArray;
+    private $usersArray = [];
 
     public function __construct($user, $password)
     {
         $this->username = $user;
         $this->pwd_hashed = password_hash($password, PASSWORD_DEFAULT);
         //devuelve una contraseña encriptada o hash de contraseña tambien podemos usar md5($password) pero no es específico para contraseñas y existen webs que descifran fácilmente las contraseñas md5
-        $db = new Model();
-        $db->_setTable('user');
 
-        $this->usersArray = $db->fetchAll();
-        $this->usersArray = json_decode(json_encode($this->usersArray), true);
+        $db = new Model();
+        $this->usersArray = $db->_getTable("users");
     }
 
     //-----------------------GETTERS-----------------------
+
+
     public function getId()
     {
         foreach ($this->usersArray as $user) {
-            if ($this->username === $user['username']) {
-                $user_id = $user['id'];
+            if ($this->username == $user['username']) {
+                $user_id = $user['_id'];
                 return $user_id;
             }
         }
@@ -55,13 +55,11 @@ class User extends Model
     }
 
 
-
-
     //acceso a usuarios
     public function loginUser($password)
     {
         if (!($this->CheckUser())) {
-            //echo 'El usuario no existe';
+            echo 'El usuario no existe';
         } else {
             foreach ($this->usersArray as $user) {
                 // echo 'El nombre de usuario es <b>' . $user['username'] . '</b> y la contraseña es <b>' . $user['password']. '</b>.<br>';
@@ -80,7 +78,7 @@ class User extends Model
     public function registerUser($username, $name, $lastname, $mail, $password)
     {
         $db = new Model();
-        $db->_setTable('user');
+        $db->_getTable('user');
 
         if (!$this->usersArray) {
             //si no existe un array con los usuarios, la crea
@@ -91,17 +89,16 @@ class User extends Model
 
         if (!$this->CheckUser()) {
             //existe el array de usuarios, pero el username no existe
-            $id = count($this->usersArray);
             $newUser = [
-                $id,
-                $username,
-                $name,
-                $lastname,
-                $mail,
-                password_hash($password, PASSWORD_DEFAULT)
+                'username' => $username,
+                'name' => $name,
+                'lastname' => $lastname,
+                'mail' => $mail,
+                'password' => password_hash($password, PASSWORD_DEFAULT)
             ];
 
-            $db->save($newUser);
+            $db->save('users', $newUser);
+
         } else {
             //error: el usuario ya existe
         }

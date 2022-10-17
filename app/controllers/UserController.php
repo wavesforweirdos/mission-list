@@ -59,7 +59,7 @@ class UserController extends Controller
                 $user = new User($username, $password);
 
                 $user->registerUser($username, $name, $lastname, $mail, $password);
-
+                
                 if (isset($_SESSION)) {
                     $_SESSION['username'] = $user->getUsername();
                     $_SESSION['name'] = $user->getName();

@@ -55,21 +55,21 @@ if (!is_array($missionArray)) {
       }
       ?>
       <div class="grid grid-rows-2 grid-cols-4 grid-rows-2 md:grid-rows-1 md:grid-cols-5 my-5 mt-10 gap-2 max-w-lg">
-          <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
-            Pending
-          </button>
-          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
-            Starred
-          </button>
-          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
-            Completed
-          </button>
-          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
-            Trashed
-          </button>
-          <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
-            All
-          </button>
+        <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
+          Pending
+        </button>
+        <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
+          Starred
+        </button>
+        <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
+          Completed
+        </button>
+        <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
+          Trashed
+        </button>
+        <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
+          All
+        </button>
       </div>
     </form>
 
@@ -77,9 +77,10 @@ if (!is_array($missionArray)) {
     <div class="space-y-3 md:w-full overflow-y-auto h-64">
 
       <?php
+
       if (isset($_SESSION['missionArray'])) {
         foreach ($missionArray as $mission) {
-          $id = $mission['id'];
+          $id = implode(" ", $mission['_id']);
           $title = ucfirst($mission['title']);
           $champ = ucfirst($mission['champ']);
           $ichamp = substr(($champ), 0, 1); //muestra la primera inicial

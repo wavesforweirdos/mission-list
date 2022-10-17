@@ -19,15 +19,9 @@ class Mission extends Model
         $this->user_id = $id;
 
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
 
         $this->missionArray = $db->fetchSome($this->user_id);
-        $this->missionArray = json_decode(json_encode($this->missionArray), true);
-
-        //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
-        $keys = array_column($this->missionArray, 'status');
-        array_multisort($keys, SORT_ASC, $this->missionArray);
-
         // echo '<pre>';
         // print_r($this->missionArray);
         // echo '</pre>';
@@ -37,6 +31,11 @@ class Mission extends Model
 
     public function getAllMissions()
     {
+        $this->missionArray = json_decode(json_encode($this->missionArray), true);
+        //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
+        $keys = array_column($this->missionArray, 'status');
+        array_multisort($keys, SORT_ASC, $this->missionArray);
+
         return $this->missionArray;
     }
 
@@ -45,30 +44,19 @@ class Mission extends Model
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
-
             foreach ($missionFile as $key => $val) {
-
-                if ($val['id'] == $id) {
+                if ($val['_id'] == $id) {
                     return $missionFile[$key];
                 }
             }
         }
     }
 
-    public function getLastId()
-    {
-        $db = new Model();
-        $db->_setTable('mission');
-
-        $lastId = count($db->fetchAll());
-        return $lastId;
-    }
-
     //añadir mission
-    public function addMission($id, $title, $champ, $tag, $end_date, $user_id)
+    public function addMission($title, $champ, $tag, $end_date, $user_id)
     {
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
 
         if (!$this->missionArray) {
             //si no existe un array de misiones, lo crea
@@ -81,17 +69,17 @@ class Mission extends Model
             //existe el array de missiones, pero el nombre de la misión no existe
             $user_id = $this->user_id;
             $newMission = [
-                $id,
-                $title,
-                $champ,
-                $tag,
-                $end_date,
-                1, //pending
-                0, //no starred
-                date("Y-m-d"),
-                $user_id
+                'title' => $title,
+                'champ' => $champ,
+                'tag' => $tag,
+                'end_date' => $end_date,
+                'status' => 1, //pending
+                'starred' => 0, //no starred
+                'date_record' => date("Y-m-d"),
+                'user_id' => $user_id
             ];
-            $db->save($newMission);
+
+            $db->save('mission', $newMission);
         } else {
             //error: el nombre de la misión ya existe
         }
@@ -100,12 +88,14 @@ class Mission extends Model
     public function deleteMission($id)
     {
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
+
+        $arrayData = ['$oid' => $id]; //convertimos int $id a un array
 
         $missionFile = $this->missionArray;
         if (is_array($missionFile)) {
             foreach ($missionFile as $mission) {
-                if ($mission['id'] == $id) {
+                if ($mission['_id'] == $arrayData) {
                     if ($mission['status'] != 3) {
                         //cambiamos el status a 'deleted' == 3
                         $status = 3;
@@ -113,24 +103,26 @@ class Mission extends Model
                         $status = 1;
                     }
                     $update = [
-                        'id' => $mission['id'],
+                        '_id' => new MongoDB\BSON\ObjectId($id),
                         'status' => $status
                     ];
                 }
             };
         }
-        $db->save($update);
+        $db->save('mission', $update, $id);
     }
 
     public function completeMission($id)
     {
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
+
+        $arrayData = ['$oid' => $id]; //convertimos int $id a un array
 
         $missionFile = $this->missionArray;
         if (is_array($missionFile)) {
             foreach ($missionFile as $mission) {
-                if ($mission['id'] == $id) {
+                if ($mission['_id'] == $arrayData) {
                     if ($mission['status'] != 2) {
                         //cambiamos el status a 'completed' == 2
                         $status = 2;
@@ -138,53 +130,52 @@ class Mission extends Model
                         $status = 1;
                     }
                     $update = [
-                        'id' => $mission['id'],
+                        '_id' =>  new MongoDB\BSON\ObjectId($id),
                         'status' => $status,
                         'end_date' => date("Y-m-d")
                     ];
                 }
             };
         }
-        $db->save($update);
+        $db->save('mission', $update, $id);
     }
 
     public function editMission($id, $title, $champ, $tag, $end_date, $status)
     {
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
 
         $missionFile = $this->missionArray;
-
         if (is_array($missionFile)) {
             foreach ($missionFile as $mission) {
 
-                if ($mission['id'] == $id) {
+                if ($mission['_id'] == $id) {
                     $update = [
-                        'id' => $mission['id'],
+                        '_id' =>  new MongoDB\BSON\ObjectId($id),
                         'title' => $title,
                         'champ' => $champ,
                         'tag' => $tag,
                         'status' => $status,
                         'end_date' => $end_date,
                     ];
-                    echo '<pre>';
-                    print_r($update);
-                    echo '</pre>';
                 }
             };
         }
-        $db->save($update);
+        $db->save('mission', $update, $id);
     }
 
     public function starredMission($id)
     {
+
         $db = new Model();
-        $db->_setTable('mission');
+        $db->_getTable('mission');
+
+        $arrayData = ['$oid' => $id]; //convertimos int $id a un array
 
         $missionFile = $this->missionArray;
         if (is_array($missionFile)) {
             foreach ($missionFile as $mission) {
-                if ($mission['id'] == $id) {
+                if ($mission['_id'] == $arrayData) {
                     if ($mission['starred'] == 0) {
                         //cambiamos starred al valor contrario 
                         $starred = 1;
@@ -192,13 +183,13 @@ class Mission extends Model
                         $starred = 0;
                     }
                     $update = [
-                        'id' => $mission['id'],
+                        '_id' =>  new MongoDB\BSON\ObjectId($id),
                         'starred' => $starred,
                     ];
                 }
             };
         }
-        $db->save($update);
+        $db->save('mission', $update, $id);
     }
 
     public function filterMission($filter)
@@ -242,9 +233,10 @@ class Mission extends Model
     public function deleteData($user_id)
     {
         $db = new Model();
-        $db->_setTable('mission');
-        $db->delete($user_id);
+        $db->_getTable('mission');
+        $db->delete('mission', $user_id);
     }
+
     public function CheckMission()
     {
 
