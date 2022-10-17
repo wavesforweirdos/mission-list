@@ -4,18 +4,26 @@ error_reporting(E_ALL|E_STRICT);
 ini_set('display_errors', 1);
 date_default_timezone_set('CET');
 
-// defines the web root
+// define el directorio web
 define('WEB_ROOT', substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], '/index.php')));
-// defindes the path to the files
+// define el directorio de todos los archivos
 define('ROOT_PATH', realpath(dirname(__FILE__) . '/../'));
-// defines the cms path
+// define el directorio de los archivos base
 define('CMS_PATH', ROOT_PATH . '/lib/base/');
+// define el directorio de configuracion
+define('CONFIG_PATH', ROOT_PATH . '/config/');
+// define el directorio de controladores
+define('CONTROLLER_PATH', ROOT_PATH.'/app/controllers/');
+// define el directorio de modelos
+define('MODEL_PATH', ROOT_PATH.'/app/models/');
+// define el directorio de vistas
+define('VIEW_PATH', ROOT_PATH.'/app/views/');
 
 // starts the session
 session_start();
 
 // includes the system routes. Define your own routes in this file
-include(ROOT_PATH . '/config/routes.php');
+include(CONFIG_PATH . 'routes.php');
 
 /**
  * Standard framework autoloader
@@ -24,8 +32,8 @@ include(ROOT_PATH . '/config/routes.php');
 function autoloader($className) {
 	// controller autoloading
 	if (strlen($className) > 10 && substr($className, -10) == 'Controller') {
-		if (file_exists(ROOT_PATH . '/app/controllers/' . $className . '.php') == 1) {
-			require_once ROOT_PATH . '/app/controllers/' . $className . '.php';
+		if (file_exists(CONTROLLER_PATH . $className . '.php') == 1) {
+			require_once CONTROLLER_PATH . $className . '.php';
 		}
 	}
 	else {
@@ -36,7 +44,7 @@ function autoloader($className) {
 			require_once ROOT_PATH . '/lib/' . $className . '.php';
 		}
 		else {
-			require_once ROOT_PATH . '/app/models/'.$className.'.php';
+			require_once MODEL_PATH .$className.'.php';
 		}
 	}
 }

@@ -35,7 +35,7 @@ class View
 		ob_start();
 		
 		// includes the view script
-		include(ROOT_PATH . '/app/views/scripts/' . $viewScript);
+		include(VIEW_PATH . 'scripts/' . $viewScript);
 		
 		// returns the content of the output buffer
 		$this->_content = ob_get_clean();
@@ -65,7 +65,7 @@ class View
 	  else {
   		// includes the current view, which uses the "$this->content()" to output the 
   		// view script that was just rendered
-  		include(ROOT_PATH . '/app/views/layouts/' . $this->_getLayout() . '.phtml');
+  		include(VIEW_PATH . 'layouts/' . $this->_getLayout() . '.phtml');
 	  }
 	}
 	
