@@ -12,7 +12,6 @@ class Mission
     private $date_record;
     */
     private $missionArray;
-    private $filteredArray;
 
     public function __construct($user)
     {
@@ -23,7 +22,16 @@ class Mission
         } else {
             $missionFile = json_decode(file_get_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json'), true);
         }
+
         $this->missionArray = $missionFile;
+
+        //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
+        $keys = array_column($this->missionArray, 'status');
+        array_multisort($keys, SORT_ASC, $this->missionArray);
+
+        // echo '<pre>';
+        // print_r($this->missionArray);
+        // echo '</pre>';
     }
 
     //-----------------------GETTERS-----------------------
@@ -51,11 +59,9 @@ class Mission
     //-----------------------SETTERS-----------------------
     public function setAllMissions($data)
     {
-        
-            $missionFile = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
-        
-        return $missionFile;
+        $this->missionArray = json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $data));
 
+        return $this->missionArray;
 
     }
 
@@ -69,7 +75,7 @@ class Mission
             "character": "' . $character . '",
             "tag": "' . $tag . '",
             "end_date": "' . $end_date . '",
-            "status": 0, 
+            "status": 1, 
             "starred": 0,
             "date_record": "' . date("Y-m-d") . '"
             }');
@@ -81,7 +87,7 @@ class Mission
                     'character' => $character,
                     'tag' => $tag,
                     'end_date' => $end_date,
-                    'status' => 0, //pending
+                    'status' => 1, //pending
                     'starred' => 0, //no starred
                     'date_record' => date("Y-m-d")
                 ]; //lanzar error si el nombre de la misión ya existe
@@ -108,7 +114,7 @@ class Mission
                     if ($val['status'] != 3) {
                         $missionFile[$key]['status'] = 3;
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 0;
+                        $missionFile[$key]['status'] = 1;
                     }
                 }
             }
@@ -131,7 +137,7 @@ class Mission
                         $missionFile[$key]['status'] = 2;
                         $missionFile[$key]['end_date'] = date("Y-m-d");
                     } else { //sino lo devolveremos por defecto a pending
-                        $missionFile[$key]['status'] = 0;
+                        $missionFile[$key]['status'] = 1;
                     }
                 }
             }

@@ -37,11 +37,8 @@ $mission = $_SESSION['mission'];
       $status = $mission['status'];
 
       switch ($status) {
-        case '0':
-          $textStatus = 'Pending';
-          break;
         case '1':
-          $textStatus = 'In progress';
+          $textStatus = 'Pending';
           break;
         case '2':
           $textStatus = 'Completed';
@@ -81,8 +78,7 @@ $mission = $_SESSION['mission'];
             <label for="status" class="ml-5 font-medium ">Status</label>
             <select id="status" name="status" required type="status" unselect class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 border-r-8 border-solid border-transparent">
               <option selected hidden value="<?php echo $status ?>"><?php echo $textStatus ?></option>
-              <option value="0">Pending</option>
-              <option value="1">In progress</option>
+              <option value="1">Pending</option>
               <option value="2">Completed</option>
               <option value="3">Deleted</option>
             </select>

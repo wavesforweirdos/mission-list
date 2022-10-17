@@ -33,6 +33,10 @@ class MissionController extends Controller
 				$title = $_POST['missionName'];
 				$mission->starredMission($title);
 				header('Location: mission');
+			} elseif (isset($_POST['pendingFilter'])) {
+				//filtrar misiones pendientes
+				$status = 1;
+				$_SESSION['missionArray'] = $mission->filterMission($status);
 			} elseif (isset($_POST['starredFilter'])) {
 				//filtrar misiones destacadas
 				$starred = 'starred';
@@ -51,10 +55,11 @@ class MissionController extends Controller
 				$query = $_POST['searchName'];
 				$_SESSION['searchName'] = $query;
 				$_SESSION['missionArray'] = $mission->filterMission($title);
-			} elseif (isset($_POST['destroy'])) {
+			} elseif (isset($_POST['deleteAll'])) {
 				//eliminar todas las misiones de la BD
 				$data = '[]';
-				$_SESSION['missionArray'] = $mission->setAllMissions($data);
+				$mission->setAllMissions($data);
+				header('Location: mission');
 			}
 		}
 	}

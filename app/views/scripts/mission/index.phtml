@@ -4,9 +4,9 @@ if (!is_array($missionArray)) {
   $missionArray = [];
 }
 
-// echo '<pre>';
-// print_r($missionArray);
-// echo '</pre>';
+//  echo '<pre>';
+//  print_r($missionArray);
+//  echo '</pre>';
 
 ?>
 
@@ -37,38 +37,46 @@ if (!is_array($missionArray)) {
       $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
       $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
 
-      if (isset($_POST['starredFilter'])) {
+      if (isset($_POST['pendingFilter'])) {
         $button2 = $featuredbtn;
-        $button1 = $button3 = $button4 = $defaultbtn;
-      } elseif (isset($_POST['completedFilter'])) {
+        $button1 = $button3 = $button4 = $button5 = $defaultbtn;
+      } elseif (isset($_POST['starredFilter'])) {
         $button3 = $featuredbtn;
-        $button1 = $button2 = $button4 = $defaultbtn;
-      } elseif (isset($_POST['trashedFilter'])) {
+        $button1 = $button2 = $button4 =  $button5 = $defaultbtn;
+      } elseif (isset($_POST['completedFilter'])) {
         $button4 = $featuredbtn;
-        $button1 = $button2 = $button3 = $defaultbtn;
+        $button1 = $button2 = $button3 =  $button5 = $defaultbtn;
+      } elseif (isset($_POST['trashedFilter'])) {
+        $button5 = $featuredbtn;
+        $button1 = $button2 = $button3 =  $button4 = $defaultbtn;
       } else {
         $button1 = $featuredbtn;
-        $button2 = $button3 = $button4 = $defaultbtn;
+        $button2 = $button3 = $button4 =  $button5 = $defaultbtn;
       }
       ?>
       <div class="mt-5 w-full flex justify-items-stretch py-5 gap-2">
-        <div class="flex-1">
+        <div class="flex-2">
           <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button1; ?>">
             All
           </button>
         </div>
         <div class="flex-1">
-          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button2; ?>">
+          <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button2; ?>">
+            Pending
+          </button>
+        </div>
+        <div class="flex-1">
+          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button3; ?>">
             Starred
           </button>
         </div>
         <div class="flex-1">
-          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button3; ?>">
+          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button4; ?>">
             Completed
           </button>
         </div>
         <div class="flex-1">
-          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button4; ?>">
+          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button5; ?>">
             Trashed
           </button>
         </div>
@@ -121,21 +129,17 @@ if (!is_array($missionArray)) {
 
           $status = $mission['status'];
           switch ($status) {
-            case '0':
-              $check = '';
-              $bgcolor = 'bg-lime-900/70';
-              break;
-            case '1':
-              $check = '';
-              $bgcolor = 'bg-lime-900/70';
             case '2':
               $check = 'text-white';
-              $bgcolor = 'bg-lime-400/50 opacity-50';
+              $bgcolor = 'bg-lime-400/50 opacity-70';
               break;
             case '3':
               $check = '';
               $bgcolor = 'bg-rose-500 opacity-30';
               break;
+            default:
+              $check = '';
+              $bgcolor = 'bg-lime-900/70';
           }
 
       ?>
@@ -147,7 +151,7 @@ if (!is_array($missionArray)) {
               <div class="flex-3 h-5 w-5 bg-<?php echo $color ?>-500 rounded-full transition duration-100 ease-in-out" data-bs-toggle="tooltip" title="<?php echo $text ?>"></div>
               <!-- Character -->
               <div class="flex-1 font-medium text-center "><?php echo $title ?></div>
-              <!-- (no funcionan) Operaciones -->
+              <!-- Operaciones -->
               <div class="flex-none font-medium flex gap-2.5 text-lime-600">
                 <!-- Input-hidden para recoger el value de mission -->
                 <input type="hidden" name="missionName" value="<?php echo $title ?>">
@@ -160,21 +164,22 @@ if (!is_array($missionArray)) {
           </form>
       <?php }
       } ?>
-
-      <!-- Botón de confirmar añadir misión -->
-      <form method="POST">
-        <div class="flex pt-10 place-content-center">
-          <button id="addmission" name="addmission" type="submit" class="group relative flex justify-center py-2 px-8 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
-            <i class="fas fa-plus"></i></button>
-        </div>
-        <!-- Enlace para cerrar sesión -->
-        <div class="flex justify-center items-center gap-5 mt-32 text-white/70 font-semibold text-sm hover:text-lime-200">
-          <a href="logout">Log out</a>
-          <div class=" text-center text-bold text-3xl">·</div>
-          <button id="destroy" name="destroy" type="submit">Delete all missions</button>
-        </div>
-      </form>
     </div>
+
+    <form method="POST">
+      <!-- Botón de confirmar añadir misión -->
+      <div class="flex pt-10 place-content-center">
+        <button id="addmission" name="addmission" type="submit" class="group relative flex justify-center py-2 px-8 border border-transparent rounded-full drop-shadow-md text-md font-semibold text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300">
+          <i class="fas fa-plus"></i></button>
+      </div>
+      <!-- Enlace para cerrar sesión -->
+      <div class="flex justify-center items-center gap-5 mt-32 text-white/70 font-semibold text-sm hover:text-lime-200">
+        <div><a href="logout">Log out</a></div>
+        <div class="text-center text-bold text-3xl">·</div>
+        <div><button id="deleteAll" name="deleteAll" type="submit">Delete all missions</button></div>
+      </div>
+    </form>
+
   </div>
 
 </div>
