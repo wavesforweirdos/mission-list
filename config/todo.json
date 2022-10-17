@@ -1,0 +1,76 @@
+[
+    {
+        "username": "wavesforweirdos",
+        "name": "Marta",
+        "lastname": "Cruz Quimas\u00f3",
+        "mail": "wavesforweirdos@gmail.com",
+        "password": "Thund77",
+        "missions": [
+            {
+                "title": "First win of the day",
+                "character": "Warwick",
+                "tag": "Daily",
+                "end_date": "2022-09-08 00:00:00",
+                "status": "finished",
+                "date_record": "2022-09-07 00:00:00"
+            },
+            {
+                "title": "Enter the Draconic Lands",
+                "character": "Brand",
+                "tag": "Group",
+                "end_date": "2022-08-12 00:00:00",
+                "status": "pending",
+                "date_record": "2022-09-05 00:00:00"
+            },
+            {
+                "title": "Kill 200 minions",
+                "character": "Varus",
+                "tag": "Attack",
+                "end_date": "2022-08-12 00:00:00",
+                "status": "in progress",
+                "date_record": "2022-09-05 00:00:00"
+            },
+            {
+                "title": "Deal 40,000 damage to Champion",
+                "character": "Yii",
+                "tag": "Attack",
+                "end_date": "2022-08-12 00:00:00",
+                "status": "in progress",
+                "date_record": "2022-09-05 00:00:00"
+            },
+            {
+                "title": "Heal 10,000 damage",
+                "character": "Sona",
+                "tag": "Defense",
+                "end_date": "2022-08-12 00:00:00",
+                "status": "in progress",
+                "date_record": "2022-09-05 00:00:00"
+            }
+        ]
+    },
+    {
+        "username": "treblie",
+        "name": "Albert",
+        "lastname": "Coderch",
+        "mail": "coderch@gmail.com",
+        "password": "$2y$10$xl3URRYaQeVY08aY2xTLnef69COlg7p4W3KgHEFMBgCWwipv.fBCa",
+        "missions": [
+            {
+                "title": "First win of the day",
+                "character": "Jhin",
+                "tag": "Daily",
+                "end_date": "2022-09-08 00:00:00",
+                "status": "pending",
+                "date_record": "2022-09-07 00:00:00"
+            },
+            {
+                "title": "Kill 700 minions",
+                "character": "Twitch",
+                "tag": "Attack",
+                "end_date": "2022-08-12 00:00:00",
+                "status": "pending",
+                "date_record": "2022-09-05 00:00:00"
+            }
+        ]
+    }
+]
