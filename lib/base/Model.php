@@ -27,40 +27,41 @@ class Model
 				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
 			);
 
-			$this->init();
-		} catch (PDOException) {
+			$this->createTables();
+		} catch (PDOException $ex) {
 			//sino existe, la creamos
 			$this->_dbh = new PDO(
 				sprintf(
 					"%s:host=%s;",
 					$settings['database']['driver'],
-					$settings['database']['host']
+					$settings['database']['host2']
 				),
-				$settings['database']['user'],
-				$settings['database']['password'],
+				$settings['database']['user2'],
+				$settings['database']['password2'],
 				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
 			);
 
-			$this->init();
 			$this->createDB();
+			$this->createTables();
 		}
-	}
-
-	public function init()
-	{
 	}
 
 	public function createDB()
 	{
 		$sql = "CREATE DATABASE IF NOT EXISTS `mission_list`; 
-		USE `mission_list`;
-		DROP TABLE IF EXISTS `mission`;
-		CREATE TABLE `mission` (
+		USE `mission_list`;";
+
+		$this->_dbh->exec($sql);
+	}
+	public function createTables()
+
+	{
+		$sql = "CREATE TABLE `mission` (
 		  `id` int DEFAULT NULL,
 		  `title` text,
 		  `champ` text,
 		  `tag` int DEFAULT NULL,
-		  `end_Date` text,
+		  `end_date` text,
 		  `status` int DEFAULT NULL,
 		  `starred` int DEFAULT NULL,
 		  `date_record` text,
@@ -80,6 +81,7 @@ class Model
 		  UNIQUE KEY `id_UNIQUE` (`id`),
 		  UNIQUE KEY `mail_UNIQUE` (`mail`)
 		) ENGINE = InnoDB DEFAULT CHARSET=utf8mb3;";
+
 
 		$this->_dbh->exec($sql);
 	}
