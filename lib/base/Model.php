@@ -60,7 +60,7 @@ class Model
 		  `title` text,
 		  `champ` text,
 		  `tag` int DEFAULT NULL,
-		  `end_Date` text,
+		  `end_date` text,
 		  `status` int DEFAULT NULL,
 		  `starred` int DEFAULT NULL,
 		  `date_record` text,
