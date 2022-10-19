@@ -34,8 +34,8 @@ if (!is_array($missionArray)) {
     <!-- Filtrado de misiones segun status/starred -->
     <form method="POST">
       <?php
-      $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 col-span-1 ';
-      $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 col-span-4 row-start-1 md:col-span-1 md:row-start-auto';
+       $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 col-span-1 ';
+       $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 col-span-4 row-start-1 md:col-span-1 md:row-start-auto';
 
       if (isset($_POST['pendingFilter'])) {
         $button2 = $featuredbtn;
@@ -55,26 +55,26 @@ if (!is_array($missionArray)) {
       }
       ?>
       <div class="grid grid-rows-2 grid-cols-4 grid-rows-2 md:grid-rows-1 md:grid-cols-5 my-5 mt-10 gap-2 max-w-lg">
-          <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
-            Pending
-          </button>
-          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
-            Starred
-          </button>
-          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
-            Completed
-          </button>
-          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
-            Trashed
-          </button>
-          <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
-            All
-          </button>
+        <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
+          Pending
+        </button>
+        <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
+          Starred
+        </button>
+        <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
+          Completed
+        </button>
+        <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
+          Trashed
+        </button>
+        <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
+          All
+        </button>
       </div>
     </form>
 
     <!-- Lista de misiones -->
-    <div class="space-y-3 md:w-full overflow-y-auto h-64">
+    <div class="space-y-3 md:w-full overflow-y-auto md:h-64">
 
       <?php
       if (isset($_SESSION['missionArray'])) {
