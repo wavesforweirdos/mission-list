@@ -1,6 +1,6 @@
 <?php
 
-$title = $_SESSION['title'];
+$id = $_SESSION['id'];
 $mission = $_SESSION['mission'];
 
 ?>
@@ -15,7 +15,7 @@ $mission = $_SESSION['mission'];
     <?php
     if (isset($_SESSION['missionArray'])) {
       $title = ucfirst($mission['title']);
-      $character = ucfirst($mission['character']);
+      $champ = ucfirst($mission['champ']);
       $tag = $mission['tag'];
 
       switch ($tag) {
@@ -57,8 +57,8 @@ $mission = $_SESSION['mission'];
             <input id="title" name="title" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" value="<?php echo $title ?>">
           </div>
           <div class="space-y-2">
-            <label for="character" class="ml-5 font-medium ">Assigned to</label>
-            <input id="character" name="character" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" value="<?php echo $character ?>">
+            <label for="champ" class="ml-5 font-medium ">Assigned to</label>
+            <input id="champ" name="champ" type="text" required class="relative block w-full px-5 py-3 rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white" value="<?php echo $champ ?>">
           </div>
           <div class="space-y-2">
             <label for="tag" class="ml-5 font-medium">Tag</label>
