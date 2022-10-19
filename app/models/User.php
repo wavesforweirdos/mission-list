@@ -1,14 +1,15 @@
 <?php
-class User
+class User extends Model
 {
 
+    public $id;
     public $username;
     public $name;
     public $lastname;
     private $mail;
     private $pwd_hashed;
 
-    private $usersArray;
+    private $usersArray = [];
 
     public function __construct($user, $password)
     {
@@ -16,19 +17,22 @@ class User
         $this->pwd_hashed = password_hash($password, PASSWORD_DEFAULT);
         //devuelve una contraseña encriptada o hash de contraseña tambien podemos usar md5($password) pero no es específico para contraseñas y existen webs que descifran fácilmente las contraseñas md5
 
-        if (!file_exists(CONFIG_PATH . '/database/users.json')) {
-            $jsonFile = json_decode(file_put_contents(CONFIG_PATH . '/database/users.json', '[]'));
-            // file_put_contents crea, en el caso de no existir el fichero, y añade el contenido que se le indique
-        } else {
-            $jsonFile = json_decode(file_get_contents(CONFIG_PATH . '/database/users.json'), true);
-            // file_get_contents transmite un fichero completo a un string
-            // json_decode decodifica un string de JSON en un array
-        }
-        $this->usersArray = $jsonFile;
+        $db = new Model();
+        $this->usersArray = $db->_getTable("users");
     }
 
-
     //-----------------------GETTERS-----------------------
+
+
+    public function getId()
+    {
+        foreach ($this->usersArray as $user) {
+            if ($this->username == $user['username']) {
+                $user_id = $user['_id'];
+                return $user_id;
+            }
+        }
+    }
     public function getUsername()
     {
         return $this->username;
@@ -45,23 +49,17 @@ class User
     {
         return $this->mail;
     }
-    public function getMissions()
-    {
-        return $this->missions;
-    }
     public function getUserArray()
     {
         return $this->usersArray;
     }
 
 
-
-
     //acceso a usuarios
     public function loginUser($password)
     {
         if (!($this->CheckUser())) {
-            //echo 'El usuario no existe';
+            echo 'El usuario no existe';
         } else {
             foreach ($this->usersArray as $user) {
                 // echo 'El nombre de usuario es <b>' . $user['username'] . '</b> y la contraseña es <b>' . $user['password']. '</b>.<br>';
@@ -79,32 +77,30 @@ class User
     //registrar usuario
     public function registerUser($username, $name, $lastname, $mail, $password)
     {
+        $db = new Model();
+        $db->_getTable('user');
 
         if (!$this->usersArray) {
-            //si no existe ninguna base de datos, la crea y añade el usuario
-            $this->usersArray = file_put_contents(CONFIG_PATH . '/database/users.json', '
-            { "username":"' . $username . '",
-            "name": "' . $name . '",
-            "lastname": "' . $lastname . '",
-            "mail": "' . $mail . '",
-            "password": "' . password_hash($password, PASSWORD_DEFAULT) . '"
-            }');
+            //si no existe un array con los usuarios, la crea
+
+            $this->usersArray = $db->fetchAll();
+            $this->usersArray = json_decode(json_encode($this->usersArray), true);
+        }
+
+        if (!$this->CheckUser()) {
+            //existe el array de usuarios, pero el username no existe
+            $newUser = [
+                'username' => $username,
+                'name' => $name,
+                'lastname' => $lastname,
+                'mail' => $mail,
+                'password' => password_hash($password, PASSWORD_DEFAULT)
+            ];
+
+            $db->save('users', $newUser);
+
         } else {
-            if (!$this->CheckUser()) {
-                //si existe la base de datos, pero el username no existe
-
-                $newUser = [
-                    'username' => $username,
-                    'name' => $name,
-                    'lastname' => $lastname,
-                    'mail' => $mail,
-                    'password' => password_hash($password, PASSWORD_DEFAULT)
-                ];
-
-                $this->usersArray[] = $newUser;
-                $json = json_encode($this->usersArray, JSON_PRETTY_PRINT);
-                file_put_contents(CONFIG_PATH . '/database/users.json', $json);
-            }
+            //error: el usuario ya existe
         }
     }
 

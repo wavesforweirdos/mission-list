@@ -5,8 +5,8 @@ class MissionController extends Controller
 	public function indexAction()
 	{
 		//echo 'Esto es indexAction <br>';
-		$username = $_SESSION['username'];
-		$mission = new Mission($username);
+		$user_id = $_SESSION['idUser'];
+		$mission = new Mission($user_id);
 		$_SESSION['missionArray'] = $mission->getAllMissions();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -15,23 +15,23 @@ class MissionController extends Controller
 				header('Location: newmission');
 			} elseif (isset($_POST['delete'])) {
 				//eliminar misión
-				$title = $_POST['missionName']; //recoger el nombre de la mision desde el input hidden
-				$mission->deleteMission($title);
+				$id = $_POST['missionId']; //recoger el nombre de la mision desde el input hidden
+				$mission->deleteMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['complete'])) {
 				//misión completada
-				$title = $_POST['missionName'];
-				$mission->completeMission($title);
+				$id = $_POST['missionId'];
+				$mission->completeMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['edit'])) {
 				//editar misión
-				$title = $_POST['missionName'];
-				$_SESSION['title'] = $title;
+				$id = $_POST['missionId'];
+				$_SESSION['id'] = $id;
 				header('Location: editmission');
 			} elseif (isset($_POST['starred'])) {
 				//destacar o no la misión
-				$title = $_POST['missionName'];
-				$mission->starredMission($title);
+				$id = $_POST['missionId'];
+				$mission->starredMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['pendingFilter'])) {
 				//filtrar misiones pendientes
@@ -57,8 +57,7 @@ class MissionController extends Controller
 				$_SESSION['missionArray'] = $mission->filterMission($title);
 			} elseif (isset($_POST['deleteAll'])) {
 				//eliminar todas las misiones de la BD
-				$data = '[]';
-				$mission->setAllMissions($data);
+				$mission->deleteData($user_id);
 				header('Location: mission');
 			}
 		}
@@ -67,21 +66,22 @@ class MissionController extends Controller
 	public function newMissionAction()
 	{
 		//echo 'Esto es newMissionAction';
-		$username = $_SESSION['username'];
-		$missions = new Mission($username);
+		$user_id = $_SESSION['idUser'];
+		
+		$missions = new Mission($user_id);
 		$_SESSION['missionArray'] = $missions->getAllMissions();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (isset($_POST['newMission']) && !empty($_POST['title']) && !empty($_POST['character']) && !empty($_POST['tag']) && !empty($_POST['end_date'])) {
+			if (isset($_POST['newMission']) && !empty($_POST['title']) && !empty($_POST['champ']) && !empty($_POST['tag']) && !empty($_POST['end_date'])) {
 				//el ususario quiere añadir una mision y todos los campos han sido añadidos
 				$title = $_POST['title'];
-				$character = $_POST['character'];
+				$champ = $_POST['champ'];
 				$tag = $_POST['tag'];
 				$end_date = $_POST['end_date'];
 
-				$missions->addMission($title, $character, $tag, $end_date);
+				$missions->addMission($title, $champ, $tag, $end_date, $user_id);
 				header('Location: mission');
-			} elseif (isset($_POST['newMission']) && (empty($_POST['title']) || empty($_POST['character']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
+			} elseif (isset($_POST['newMission']) && (empty($_POST['title']) || empty($_POST['champ']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
 				//alguno de los campos no ha sido enviado
 				$error = 'Make sure all the fields are filled in.';
 				$_SESSION['error'] = $error;
@@ -95,25 +95,25 @@ class MissionController extends Controller
 	public function editMissionAction()
 	{
 		//echo 'Esto es editMissionAction';
-		$username = $_SESSION['username'];
-		$missions = new Mission($username);
+		$user_id = $_SESSION['idUser'];
+		$id = $_SESSION['id'];
 
-		$title = $_SESSION['title'];
-		$_SESSION['mission'] = $missions->getMission($title);
-		$mission = $_SESSION['mission'];
+		$mission = new Mission($user_id);
+		$_SESSION['mission'] = $mission->getMission($id);
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if (isset($_POST['editMission'])) {
 				//el ususario quiere cambiar el valor de alguno de los inputs
-				$modified_title = $_POST['title'];
-				$character = $_POST['character'];
-				$tag = $_POST['tag'];
-				$end_date = $_POST['end_date'];
-				$status = $_POST['status'];
 
-				$missions->editMission($title, $modified_title, $character, $tag, $end_date, $status);
+				$modified_title = $_POST['title'];
+				$modified_champ = $_POST['champ'];
+				$modified_tag = $_POST['tag'];
+				$modified_end_date = $_POST['end_date'];
+				$modified_status = $_POST['status'];
+
+				$mission->editMission($id, $modified_title, $modified_champ, $modified_tag, $modified_end_date, $modified_status);
 				header('Location: mission');
-			} elseif (isset($_POST['editMission']) && (empty($_POST['title']) || empty($_POST['character']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
+			} elseif (isset($_POST['editMission']) && (empty($_POST['title']) || empty($_POST['champ']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
 				//alguno de los campos no ha sido enviado
 				$error = 'Make sure all the fields are filled in.';
 				$_SESSION['error'] = $error;

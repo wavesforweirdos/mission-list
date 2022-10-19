@@ -24,6 +24,7 @@ session_start();
 
 // includes the system routes. Define your own routes in this file
 include(CONFIG_PATH . 'routes.php');
+require_once(ROOT_PATH.'/vendor/autoload.php');
 
 /**
  * Standard framework autoloader
