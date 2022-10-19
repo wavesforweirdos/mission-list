@@ -11,16 +11,16 @@ if (!is_array($missionArray)) {
 ?>
 
 <!-- Estrucutra listado de misiones -->
-<div class="mx-auto space-y-1 min-h-full p-20 flex justify-center text-white">
-  <div class="flex flex-col flex-wrap max-w-lg w-full justify-center">
+<div class="mx-auto flex flex-row justify-center items-center content-center mt-12 md:mt-28 mx-4 space-y-1 text-white">
+  <div class="flex flex-col max-w-lg w-full justify-center">
     <div class="space-y-5">
       <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
       <h1 class="text-center text-4xl font-bold">Mission List</h1>
     </div>
 
     <!-- Filtrado de misiones por nombre -->
-    <form method="POST">
-      <div class="mt-10 input-group flex w-full drop-shadow-md">
+    <form method="POST" class="w-full">
+      <div class="mt-10 input-group flex drop-shadow-md">
         <input id="searchName" name="searchName" type="search" class="relative block w-full px-5 py-2 rounded-l-2xl  focus:outline-none focus:ring focus:ring-lime-500 bg-lime-600 placeholder-white font-normal text-xs tracking-wider" placeholder="Search by mission name...">
         <button id="searchMission" name="searchMission" type="submit" class="btn px-6 py-2.5 leading-tight rounded-r-2xl focus:outline-none focus:ring focus:ring-lime-500 bg-lime-700 hover:bg-lime-800 transition duration-150 ease-in-out flex items-center">
           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -34,8 +34,8 @@ if (!is_array($missionArray)) {
     <!-- Filtrado de misiones segun status/starred -->
     <form method="POST">
       <?php
-      $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
-      $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300';
+     $defaultbtn = 'font-normal text-white bg-lime-600 hover:bg-lime-700 col-span-1 ';
+     $featuredbtn = 'font-medium text-lime-600 bg-white hover:bg-lime-100 col-span-4 row-start-1 md:col-span-1 md:row-start-auto';
 
       if (isset($_POST['pendingFilter'])) {
         $button2 = $featuredbtn;
@@ -54,37 +54,27 @@ if (!is_array($missionArray)) {
         $button2 = $button3 = $button4 =  $button5 = $defaultbtn;
       }
       ?>
-      <div class="mt-5 w-full flex justify-items-stretch py-5 gap-2">
-        <div class="flex-2">
-          <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button1; ?>">
-            All
-          </button>
-        </div>
-        <div class="flex-1">
-          <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button2; ?>">
-            Pending
-          </button>
-        </div>
-        <div class="flex-1">
-          <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button3; ?>">
-            Starred
-          </button>
-        </div>
-        <div class="flex-1">
-          <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button4; ?>">
-            Completed
-          </button>
-        </div>
-        <div class="flex-1">
-          <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-4 border border-transparent rounded-full drop-shadow-md text-sm <?php echo $button5; ?>">
-            Trashed
-          </button>
-        </div>
+      <div class="grid grid-rows-2 grid-cols-4 grid-rows-2 md:grid-rows-1 md:grid-cols-5 my-5 mt-10 gap-2 max-w-lg">
+        <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
+          Pending
+        </button>
+        <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
+          Starred
+        </button>
+        <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
+          Completed
+        </button>
+        <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
+          Trashed
+        </button>
+        <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
+          All
+        </button>
       </div>
     </form>
 
     <!-- Lista de misiones -->
-    <div class="space-y-3 w-full">
+    <div class="space-y-3 md:w-full overflow-y-auto md:h-64">
 
       <?php
       if (isset($_SESSION['missionArray'])) {
@@ -143,7 +133,7 @@ if (!is_array($missionArray)) {
           }
 
       ?>
-          <form method="POST">
+          <form method="POST" class="pr-1">
             <div class="flex gap-7 px-5 py-3 items-center rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-00 <?php echo $bgcolor ?>">
               <!-- Character -->
               <div class="flex-3 text-2xl font-semibold transition duration-100 ease-in-out" data-bs-toggle="tooltip" data-bs-html="true" title="<?php echo $character ?>"><?php echo $iCharacter ?></a></div>
