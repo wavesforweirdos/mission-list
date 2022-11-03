@@ -104,6 +104,8 @@ class User
                 $this->usersArray[] = $newUser;
                 $json = json_encode($this->usersArray, JSON_PRETTY_PRINT);
                 file_put_contents(CONFIG_PATH . '/database/users.json', $json);
+
+                json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', '[]'));
             }
         }
     }

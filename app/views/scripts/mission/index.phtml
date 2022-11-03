@@ -77,8 +77,8 @@ if (!is_array($missionArray)) {
     <div class="space-y-3 md:w-full overflow-y-auto md:h-64">
 
       <?php
-      if (isset($_SESSION['missionArray'])) {
-        foreach ($missionArray as $mission) {
+      if (isset($_SESSION['missionArray']) && !empty($_SESSION['missionArray'])){
+        foreach ($missionArray as $key => $mission) {
           $title = ucfirst($mission['title']);
           $character = ucfirst($mission['character']);
           $iCharacter = substr(($character), 0, 1); //muestra la primera inicial
@@ -144,7 +144,7 @@ if (!is_array($missionArray)) {
               <!-- Operaciones -->
               <div class="flex-none font-medium flex gap-2.5 text-lime-600">
                 <!-- Input-hidden para recoger el value de mission -->
-                <input type="hidden" name="missionName" value="<?php echo $title ?>">
+                <input type="hidden" name="idName" value="<?php echo $key ?>">
                 <button id="starred" name="starred" type="submit"><i class="fa-<?php echo $star . ' ' . $colorStar ?> fa-star hover:text-white"></i></button>
                 <button id="edit" name="edit" type="submit"><i class="fa-regular fa-pen-to-square hover:text-white"></i></button>
                 <button id="complete" name="complete" type="submit"><i class="fa-solid fa-check <?php echo $check ?> hover:text-white"></i></button>

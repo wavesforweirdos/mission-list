@@ -15,23 +15,23 @@ class MissionController extends Controller
 				header('Location: newmission');
 			} elseif (isset($_POST['delete'])) {
 				//eliminar misión
-				$title = $_POST['missionName']; //recoger el nombre de la mision desde el input hidden
-				$mission->deleteMission($title);
+				$id = $_POST['idName']; //recoger el nombre de la mision desde el input hidden
+				$mission->deleteMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['complete'])) {
 				//misión completada
-				$title = $_POST['missionName'];
-				$mission->completeMission($title);
+				$id = $_POST['idName'];
+				$mission->completeMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['edit'])) {
 				//editar misión
-				$title = $_POST['missionName'];
-				$_SESSION['title'] = $title;
+				$id = $_POST['idName'];
+				$_SESSION['id'] = $id;
 				header('Location: editmission');
 			} elseif (isset($_POST['starred'])) {
 				//destacar o no la misión
-				$title = $_POST['missionName'];
-				$mission->starredMission($title);
+				$id = $_POST['idName'];
+				$mission->starredMission($id);
 				header('Location: mission');
 			} elseif (isset($_POST['pendingFilter'])) {
 				//filtrar misiones pendientes
@@ -98,8 +98,8 @@ class MissionController extends Controller
 		$username = $_SESSION['username'];
 		$missions = new Mission($username);
 
-		$title = $_SESSION['title'];
-		$_SESSION['mission'] = $missions->getMission($title);
+		$id = $_SESSION['id'];
+		$_SESSION['mission'] = $missions->getMission($id);
 		$mission = $_SESSION['mission'];
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -111,7 +111,7 @@ class MissionController extends Controller
 				$end_date = $_POST['end_date'];
 				$status = $_POST['status'];
 
-				$missions->editMission($title, $modified_title, $character, $tag, $end_date, $status);
+				$missions->editMission($id, $modified_title, $character, $tag, $end_date, $status);
 				header('Location: mission');
 			} elseif (isset($_POST['editMission']) && (empty($_POST['title']) || empty($_POST['character']) || empty($_POST['tag']) || empty($_POST['end_date']))) {
 				//alguno de los campos no ha sido enviado
@@ -123,5 +123,4 @@ class MissionController extends Controller
 			}
 		}
 	}
-
 }
