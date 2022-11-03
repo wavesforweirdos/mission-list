@@ -26,8 +26,10 @@ class Mission
         $this->missionArray = $missionFile;
 
         //ordenar el array por el status (1.pending - 2.completed - 3.deleted)
-        $keys = array_column($this->missionArray, 'status');
-        array_multisort($keys, SORT_ASC, $this->missionArray);
+        if (!empty($this->missionArray)) {
+            $keys = array_column($this->missionArray, 'status');
+            array_multisort($keys, SORT_ASC, $this->missionArray);
+        }
 
         // echo '<pre>';
         // print_r($this->missionArray);
@@ -41,15 +43,14 @@ class Mission
         return $this->missionArray;
     }
 
-    public function getMission($title)
+    public function getMission($id)
     {
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
 
             foreach ($missionFile as $key => $val) {
-
-                if ($val['title'] === $title) {
+                if ($key == $id) {
                     return $missionFile[$key];
                 }
             }
@@ -71,16 +72,15 @@ class Mission
         if (!$this->missionArray) {
             //si no existe un array de misiones, lo crea y añade el usuario
             $this->missionArray = file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', '
-            { "title":"' . $title . '",
+            [{ "title":"' . $title . '",
             "character": "' . $character . '",
             "tag": "' . $tag . '",
             "end_date": "' . $end_date . '",
             "status": 1, 
             "starred": 0,
             "date_record": "' . date("Y-m-d") . '"
-            }');
+            }]');
         } else {
-            if (!$this->CheckMission()) {
                 //si existe la base de datos y el nombre de la mision no existe
                 $newMission = [
                     'title' => $title,
@@ -95,18 +95,17 @@ class Mission
                 $this->missionArray[] = $newMission;
                 $json = json_encode($this->missionArray, JSON_PRETTY_PRINT);
                 file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', $json);
-            }
         }
     }
 
-    public function deleteMission($title)
+    public function deleteMission($id)
     {
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
             foreach ($missionFile as $key => $val) {
                 //echo $val['title'];
-                if ($val['title'] === $title) {
+                if ($key == $id) {
 
                     //cambiamos el statos a 'deleted' == 3
                     $missionFile[$key]['status'] = 3;
@@ -124,14 +123,14 @@ class Mission
         }
     }
 
-    public function completeMission($title)
+    public function completeMission($id)
     {
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
             foreach ($missionFile as $key => $val) {
 
-                if ($val['title'] === $title) {
+                if ($key == $id) {
 
                     if ($val['status'] != 2) {
                         $missionFile[$key]['status'] = 2;
@@ -147,15 +146,16 @@ class Mission
         }
     }
 
-    public function editMission($title, $modified_title, $character, $tag, $end_date, $status)
+    public function editMission($id, $modified_title, $character, $tag, $end_date, $status)
     {
 
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
+
             foreach ($missionFile as $key => $val) {
 
-                if ($val['title'] === $title) {
+                if ($key == $id) {
 
                     //cambiamos los valores por los especificados en los inputs del formulario
                     $missionFile[$key]['title'] = $modified_title;
@@ -171,14 +171,14 @@ class Mission
         }
     }
 
-    public function starredMission($title)
+    public function starredMission($id)
     {
         $missionFile = $this->missionArray;
 
         if (is_array($missionFile)) {
             foreach ($missionFile as $key => $val) {
 
-                if ($val['title'] === $title) {
+                if ($key == $id) {
 
                     //cambiamos starred al valor contrario 
                     if ($val['starred'] == 0) {
@@ -233,15 +233,15 @@ class Mission
     }
 
 
-    public function CheckMission()
+    public function CheckMissionName($title)
     {
 
         if (!$this->missionArray) {
             return false;
         } else {
             foreach ($this->missionArray as $mission) {
-                //echo 'El nombre de la misión es:' . $mission['title'];
-                if ($this->missionArray === $mission['title']) {
+                // echo 'El nombre de la misión es:' . $mission['title'];
+                if ($mission['title'] === strtolower($title)) {
                     return true;
                 }
             }
