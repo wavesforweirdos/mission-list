@@ -2,8 +2,20 @@
 
 class MissionController extends Controller
 {
+	/**
+	 * Las misiones son de cada usuario: sin sesión iniciada se vuelve al login.
+	 */
+	private function requireLogin()
+	{
+		if (empty($_SESSION['username']) || !User::isValidUsername($_SESSION['username'])) {
+			header('Location: index');
+			exit;
+		}
+	}
+
 	public function indexAction()
 	{
+		$this->requireLogin();
 		//echo 'Esto es indexAction <br>';
 		$username = $_SESSION['username'];
 		$mission = new Mission($username);
@@ -66,6 +78,7 @@ class MissionController extends Controller
 
 	public function newMissionAction()
 	{
+		$this->requireLogin();
 		//echo 'Esto es newMissionAction';
 		$username = $_SESSION['username'];
 		$missions = new Mission($username);
@@ -94,11 +107,12 @@ class MissionController extends Controller
 
 	public function editMissionAction()
 	{
+		$this->requireLogin();
 		//echo 'Esto es editMissionAction';
 		$username = $_SESSION['username'];
 		$missions = new Mission($username);
 
-		$id = $_SESSION['id'];
+		$id = $_SESSION['id'] ?? '';
 		$_SESSION['mission'] = $missions->getMission($id);
 		$mission = $_SESSION['mission'];
 

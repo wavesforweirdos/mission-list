@@ -18,6 +18,7 @@ class UserController extends Controller
                 }
 
                 if ($user->loginUser($password)) {
+                    session_regenerate_id(true);
 
                     $_SESSION['username'] = $user->getUsername();
                     $_SESSION['name'] = $user->getName();
@@ -58,18 +59,13 @@ class UserController extends Controller
 
                 $user = new User($username, $password);
 
-                $user->registerUser($username, $name, $lastname, $mail, $password);
-
-                if (isset($_SESSION)) {
-                    $_SESSION['username'] = $user->getUsername();
-                    $_SESSION['name'] = $user->getName();
-                    $_SESSION['lastname'] = $user->getLastname();
-                    $_SESSION['mail'] = $user->getMail();
-                    $_SESSION['missions'] = $user->getMissions();
-
-                    //redirigimos a la pagina de login para que inicie sesión (recordamos el username utilizado)
+                // Registrarse no inicia sesión: hay que entrar con la contraseña en el login.
+                if ($user->registerUser($username, $name, $lastname, $mail, $password)) {
                     header('Location: index');
+                } else {
+                    header('Location: signin');
                 }
+                exit;
             } elseif (isset($_POST['login'])) {
                 //el ususario quiere acceder
 

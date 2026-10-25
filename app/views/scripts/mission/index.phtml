@@ -14,7 +14,7 @@ if (!is_array($missionArray)) {
 <div class="mx-auto flex flex-row justify-center items-center content-center mt-12 md:mt-28 mx-4 space-y-1 text-white">
   <div class="flex flex-col max-w-lg w-full justify-center">
     <div class="space-y-5">
-      <img class="mx-auto h-12" src="http://wavesforweirdos.com/wp-content/uploads/2022/01/wf-logo-white-1.png" alt="weirdofamily">
+      <img class="mx-auto h-12" src="<?php echo e(WEB_ROOT); ?>/images/wf-logo-white.png" alt="wavesforweirdos">
       <h1 class="text-center text-4xl font-bold">Mission List</h1>
     </div>
 
@@ -79,9 +79,9 @@ if (!is_array($missionArray)) {
       <?php
       if (isset($_SESSION['missionArray']) && !empty($_SESSION['missionArray'])){
         foreach ($missionArray as $key => $mission) {
-          $title = ucfirst($mission['title']);
-          $character = ucfirst($mission['character']);
-          $iCharacter = substr(($character), 0, 1); //muestra la primera inicial
+          $title = e(ucfirst($mission['title']));
+          $character = e(ucfirst($mission['character']));
+          $iCharacter = e(mb_substr(ucfirst($mission['character']), 0, 1)); //muestra la primera inicial
           $tag = $mission['tag'];
 
           switch ($tag) {
@@ -103,7 +103,7 @@ if (!is_array($missionArray)) {
               break;
           }
 
-          $end_date = $mission['end_date'];
+          $end_date = e($mission['end_date']);
           $starred = $mission['starred'];
 
           switch ($starred) {

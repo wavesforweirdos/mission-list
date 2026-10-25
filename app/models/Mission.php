@@ -15,6 +15,9 @@ class Mission
 
     public function __construct($user)
     {
+        if (!User::isValidUsername($user)) {
+            throw new InvalidArgumentException('Invalid username');
+        }
         $this->username = $user;
 
         if (!file_exists(CONFIG_PATH . '/database/' . $this->username . '-missions.json')) {
