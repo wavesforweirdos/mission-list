@@ -1,7 +1,15 @@
 <?php
 
-error_reporting(E_ALL|E_STRICT);
-ini_set('display_errors', 1);
+// Con `php -S` (servidor de desarrollo) los ficheros reales de web/ (imágenes...) se sirven tal cual.
+if (PHP_SAPI === 'cli-server') {
+	$requested = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+	if ($requested !== '/' && is_file(__DIR__ . $requested)) {
+		return false;
+	}
+}
+// Los errores solo se muestran con APP_DEBUG=1 (p. ej. `APP_DEBUG=1 php -S ...`).
+error_reporting(E_ALL);
+ini_set('display_errors', getenv('APP_DEBUG') === '1' ? '1' : '0');
 date_default_timezone_set('CET');
 
 // define el directorio web
@@ -51,6 +59,8 @@ function autoloader($className) {
 
 // activates the autoloader
 spl_autoload_register('autoloader');
+
+require_once CMS_PATH . 'helpers.php';
 
 $router = new Router();
 $router->execute($routes);

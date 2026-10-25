@@ -28,6 +28,15 @@ class User
     }
 
 
+    /**
+     * El nombre de usuario forma parte del nombre del fichero de misiones
+     * (<usuario>-missions.json), así que solo admite letras, números, _ y -.
+     */
+    public static function isValidUsername($username)
+    {
+        return is_string($username) && preg_match('/^[A-Za-z0-9_-]{3,30}$/', $username) === 1;
+    }
+
     //-----------------------GETTERS-----------------------
     public function getUsername()
     {
@@ -60,6 +69,10 @@ class User
     //acceso a usuarios
     public function loginUser($password)
     {
+        if (!self::isValidUsername($this->username)) {
+            return false;
+        }
+
         if (!($this->CheckUser())) {
             //echo 'El usuario no existe';
         } else {
@@ -76,38 +89,33 @@ class User
         }
     }
 
-    //registrar usuario
+    //registrar usuario: devuelve true si se ha creado, false si los datos no son
+    //válidos o el nombre de usuario ya existe
     public function registerUser($username, $name, $lastname, $mail, $password)
     {
-
-        if (!$this->usersArray) {
-            //si no existe ninguna base de datos, la crea y añade el usuario
-            $this->usersArray = file_put_contents(CONFIG_PATH . '/database/users.json', '
-            { "username":"' . $username . '",
-            "name": "' . $name . '",
-            "lastname": "' . $lastname . '",
-            "mail": "' . $mail . '",
-            "password": "' . password_hash($password, PASSWORD_DEFAULT) . '"
-            }');
-        } else {
-            if (!$this->CheckUser()) {
-                //si existe la base de datos, pero el username no existe
-
-                $newUser = [
-                    'username' => $username,
-                    'name' => $name,
-                    'lastname' => $lastname,
-                    'mail' => $mail,
-                    'password' => password_hash($password, PASSWORD_DEFAULT)
-                ];
-
-                $this->usersArray[] = $newUser;
-                $json = json_encode($this->usersArray, JSON_PRETTY_PRINT);
-                file_put_contents(CONFIG_PATH . '/database/users.json', $json);
-
-                json_decode(file_put_contents(CONFIG_PATH . '/database/' . $this->username . '-missions.json', '[]'));
-            }
+        if (!self::isValidUsername($username) || $name === '' || $password === '' || !filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            return false;
         }
+        if ($this->CheckUser()) {
+            return false;
+        }
+
+        $this->name = $name;
+        $this->lastname = $lastname;
+        $this->mail = $mail;
+
+        $users = is_array($this->usersArray) ? $this->usersArray : [];
+        $users[] = [
+            'username' => $username,
+            'name' => $name,
+            'lastname' => $lastname,
+            'mail' => $mail,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ];
+        $this->usersArray = $users;
+        file_put_contents(CONFIG_PATH . '/database/users.json', json_encode($users, JSON_PRETTY_PRINT), LOCK_EX);
+
+        return true;
     }
 
     //desconectarse
