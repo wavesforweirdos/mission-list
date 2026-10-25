@@ -20,7 +20,7 @@ check() { # descripción, esperado, obtenido
 status() { curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$@"; }
 
 check "la página de login carga" "200 " "$(status "$BASE/")"
-check "el logo se sirve" "200 " "$(status "$BASE/images/wf-logo-black.png")"
+check "el logo se sirve" "200 " "$(status "$BASE/images/wf-logo-white.png")"
 check "las misiones piden iniciar sesión" "302 $BASE/index" "$(status "$BASE/mission")"
 check "un nombre de usuario con ../ se rechaza" "302 $BASE/signin" \
   "$(status -d 'signin=1&username=../../web/pwn&name=x&lastname=y&email=a@b.co&password=pw' "$BASE/signin")"
