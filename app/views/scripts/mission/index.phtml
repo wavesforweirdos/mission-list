@@ -54,20 +54,20 @@ if (!is_array($missionArray)) {
         $button2 = $button3 = $button4 =  $button5 = $defaultbtn;
       }
       ?>
-      <div class="grid grid-rows-2 grid-cols-4 grid-rows-2 md:grid-rows-1 md:grid-cols-5 my-5 mt-10 gap-2 max-w-lg">
-        <button id="pendingFilter" name="pendingFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
+      <div class="flex flex-wrap justify-center gap-2 md:grid md:grid-rows-1 md:grid-cols-5 my-5 mt-10 max-w-lg">
+        <button id="pendingFilter" name="pendingFilter" type="submit" class="md:mx-auto py-1.5 px-4 md:container md:py-1 md:px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button2; ?> ">
           Pending
         </button>
-        <button id="starredFilter" name="starredFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
+        <button id="starredFilter" name="starredFilter" type="submit" class="md:mx-auto py-1.5 px-4 md:container md:py-1 md:px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button3; ?> ">
           Starred
         </button>
-        <button id="completedFilter" name="completedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
+        <button id="completedFilter" name="completedFilter" type="submit" class="md:mx-auto py-1.5 px-4 md:container md:py-1 md:px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button4; ?> ">
           Completed
         </button>
-        <button id="trashedFilter" name="trashedFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
+        <button id="trashedFilter" name="trashedFilter" type="submit" class="md:mx-auto py-1.5 px-4 md:container md:py-1 md:px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button5; ?> ">
           Trashed
         </button>
-        <button id="allmissionFilter" name="allmissionFilter" type="submit" class="container mx-auto py-1 px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
+        <button id="allmissionFilter" name="allmissionFilter" type="submit" class="md:mx-auto py-1.5 px-4 md:container md:py-1 md:px-2 border border-transparent rounded-full drop-shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-300 <?php echo $button1; ?> ">
           All
         </button>
       </div>
@@ -134,15 +134,15 @@ if (!is_array($missionArray)) {
 
       ?>
           <form method="POST" class="pr-1">
-            <div class="flex gap-7 px-5 py-3 items-center rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-00 <?php echo $bgcolor ?>">
+            <div class="flex gap-3 px-4 py-3 md:gap-7 md:px-5 items-center rounded-2xl drop-shadow-md focus:outline-none focus:ring focus:ring-lime-00 <?php echo $bgcolor ?>">
               <!-- Character -->
-              <div class="flex-3 text-2xl font-semibold transition duration-100 ease-in-out" data-bs-toggle="tooltip" data-bs-html="true" title="<?php echo $character ?>"><?php echo $iCharacter ?></a></div>
+              <div class="flex-3 w-5 text-center text-xl md:w-auto md:text-2xl font-semibold transition duration-100 ease-in-out" data-bs-toggle="tooltip" data-bs-html="true" title="<?php echo $character ?>"><?php echo $iCharacter ?></a></div>
               <!-- Tag -->
               <div class="flex-3 h-5 w-5 bg-<?php echo $color ?>-500 rounded-full transition duration-100 ease-in-out" data-bs-toggle="tooltip" title="<?php echo $text ?>"></div>
               <!-- Character -->
-              <div class="flex-1 font-medium text-center "><?php echo $title ?></div>
+              <div class="flex-1 min-w-0 break-words text-sm md:text-base font-medium text-center "><?php echo $title ?></div>
               <!-- Operaciones -->
-              <div class="flex-none font-medium flex gap-2.5 text-lime-600">
+              <div class="flex-none font-medium flex gap-3 md:gap-2.5 text-lime-600">
                 <!-- Input-hidden para recoger el value de mission -->
                 <input type="hidden" name="idName" value="<?php echo $key ?>">
                 <button id="starred" name="starred" type="submit"><i class="fa-<?php echo $star . ' ' . $colorStar ?> fa-star hover:text-white"></i></button>
