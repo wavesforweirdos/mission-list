@@ -1,0 +1,9 @@
+[
+    {
+        "username": "demo",
+        "name": "Demo",
+        "lastname": "Player",
+        "mail": "demo@example.com",
+        "password": "$2y$12$OjDz68pD6kLrimcOE0ggQeF1R.tYjNuN4iBtTeyPsJRs3EfJRtFEq"
+    }
+]

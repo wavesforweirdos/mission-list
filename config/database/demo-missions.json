@@ -1,0 +1,56 @@
+[
+    {
+        "title": "Clear the jungle camps",
+        "character": "Warwick",
+        "tag": "4",
+        "end_date": "2026-11-08",
+        "status": 1,
+        "starred": 0,
+        "date_record": "2026-10-22"
+    },
+    {
+        "title": "Daily win with the team",
+        "character": "Sona",
+        "tag": "3",
+        "end_date": "2026-11-05",
+        "status": 1,
+        "starred": 0,
+        "date_record": "2026-10-21"
+    },
+    {
+        "title": "Defend the north tower",
+        "character": "Garen",
+        "tag": "1",
+        "end_date": "2026-11-02",
+        "status": 1,
+        "starred": 1,
+        "date_record": "2026-10-20"
+    },
+    {
+        "title": "Group up for Baron",
+        "character": "Lux",
+        "tag": "2",
+        "end_date": "2026-11-10",
+        "status": 1,
+        "starred": 1,
+        "date_record": "2026-10-22"
+    },
+    {
+        "title": "Enter the Draconic Lands",
+        "character": "Sona",
+        "tag": "2",
+        "end_date": "2026-10-23",
+        "status": 2,
+        "starred": 0,
+        "date_record": "2026-10-17"
+    },
+    {
+        "title": "First win of the day",
+        "character": "Ashe",
+        "tag": "3",
+        "end_date": "2026-10-24",
+        "status": 2,
+        "starred": 0,
+        "date_record": "2026-10-18"
+    }
+]
