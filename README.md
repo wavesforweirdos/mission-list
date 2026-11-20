@@ -34,7 +34,7 @@ tests/smoke.sh     smoke test run in CI
 
 ## Getting started
 
-You only need PHP 8.0+.
+You only need PHP 8.6+.
 
 ```sh
 git clone https://github.com/wavesforweirdos/mission-list
